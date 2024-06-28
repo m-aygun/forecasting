@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Mette-Louiise Marie Jonassen">
+<meta name="dcterms.date" content="2024-06-25">
+
+<title>Mundtlig forecasting</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="MundtligForecasting_files/libs/clipboard/clipboard.min.js"></script>
+<script src="MundtligForecasting_files/libs/quarto-html/quarto.js"></script>
+<script src="MundtligForecasting_files/libs/quarto-html/popper.min.js"></script>
+<script src="MundtligForecasting_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="MundtligForecasting_files/libs/quarto-html/anchor.min.js"></script>
+<link href="MundtligForecasting_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="MundtligForecasting_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="MundtligForecasting_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="MundtligForecasting_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="MundtligForecasting_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="MundtligForecasting_files/libs/htmltools-fill-0.5.8/fill.css" rel="stylesheet">
+<script src="MundtligForecasting_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="MundtligForecasting_files/libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="MundtligForecasting_files/libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="MundtligForecasting_files/libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="MundtligForecasting_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="MundtligForecasting_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="MundtligForecasting_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="MundtligForecasting_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<script src="MundtligForecasting_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="MundtligForecasting_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Mundtlig forecasting</h1>
+                      </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Affiliation</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author">Mette-Louiise Marie Jonassen </p>
+    </div>
+    <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              Erhvervsakademi Dania
+            </p>
+        </div>
+    </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Afleveres d.</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 25, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#indlæsning-af-pakker" id="toc-indlæsning-af-pakker" class="nav-link active" data-scroll-target="#indlæsning-af-pakker">Indlæsning af pakker</a></li>
+  <li><a href="#indlæs-data" id="toc-indlæs-data" class="nav-link" data-scroll-target="#indlæs-data">Indlæs data</a></li>
+  <li><a href="#visualisering" id="toc-visualisering" class="nav-link" data-scroll-target="#visualisering">Visualisering</a></li>
+  <li><a href="#stl-og-spikinessstørste-sæsonudsving" id="toc-stl-og-spikinessstørste-sæsonudsving" class="nav-link" data-scroll-target="#stl-og-spikinessstørste-sæsonudsving">STL og spikiness/største sæsonudsving</a></li>
+  <li><a href="#manuel-sarima" id="toc-manuel-sarima" class="nav-link" data-scroll-target="#manuel-sarima">Manuel (S)ARIMA</a>
+  <ul class="collapse">
+  <li><a href="#test-om-data-er-stationær" id="toc-test-om-data-er-stationær" class="nav-link" data-scroll-target="#test-om-data-er-stationær">Test om data er stationær</a></li>
+  <li><a href="#sæsondifferenciering-og-test-om-data-er-stationære" id="toc-sæsondifferenciering-og-test-om-data-er-stationære" class="nav-link" data-scroll-target="#sæsondifferenciering-og-test-om-data-er-stationære">Sæsondifferenciering og test om data er stationære</a></li>
+  <li><a href="#acf-plot---valg-af-modeller" id="toc-acf-plot---valg-af-modeller" class="nav-link" data-scroll-target="#acf-plot---valg-af-modeller">ACF Plot - Valg af modeller</a>
+  <ul class="collapse">
+  <li><a href="#manuel-sarima-1" id="toc-manuel-sarima-1" class="nav-link" data-scroll-target="#manuel-sarima-1">Manuel SARIMA</a></li>
+  </ul></li>
+  <li><a href="#auto-arima" id="toc-auto-arima" class="nav-link" data-scroll-target="#auto-arima">Auto ARIMA</a></li>
+  </ul></li>
+  <li><a href="#ets-model" id="toc-ets-model" class="nav-link" data-scroll-target="#ets-model">ETS model</a></li>
+  <li><a href="#evaluering" id="toc-evaluering" class="nav-link" data-scroll-target="#evaluering">Evaluering</a></li>
+  <li><a href="#forecasting" id="toc-forecasting" class="nav-link" data-scroll-target="#forecasting">Forecasting</a></li>
+  <li><a href="#ny-løsning---forecasting-af-hierachial-timeseries" id="toc-ny-løsning---forecasting-af-hierachial-timeseries" class="nav-link" data-scroll-target="#ny-løsning---forecasting-af-hierachial-timeseries">Ny løsning - Forecasting af Hierachial Timeseries</a>
+  <ul class="collapse">
+  <li><a href="#hierakisk-tidsserie" id="toc-hierakisk-tidsserie" class="nav-link" data-scroll-target="#hierakisk-tidsserie">Hierakisk Tidsserie</a></li>
+  </ul></li>
+  <li><a href="#sammenligning-med-tidligere-model" id="toc-sammenligning-med-tidligere-model" class="nav-link" data-scroll-target="#sammenligning-med-tidligere-model">Sammenligning med tidligere model</a></li>
+  <li><a href="#anbefalinger" id="toc-anbefalinger" class="nav-link" data-scroll-target="#anbefalinger">Anbefalinger</a></li>
+  <li><a href="#konklussion" id="toc-konklussion" class="nav-link" data-scroll-target="#konklussion">Konklussion</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="indlæsning-af-pakker" class="level1">
+<h1>Indlæsning af pakker</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2510</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repos =</span> <span class="fu">c</span>(<span class="at">CRAN =</span> <span class="st">"https://cran.rstudio.com/"</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Konsolideret pakkeindlæsning med pacman</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"cluster"</span>, <span class="st">"class"</span>, <span class="st">"ggplot2"</span>, <span class="st">"tidyverse"</span>, <span class="st">"tibble"</span>, <span class="st">"openxlsx"</span>, <span class="st">"glmnet"</span>, <span class="st">"factoextra"</span>, </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"caret"</span>, <span class="st">"randomForest"</span>, <span class="st">"lubridate"</span>, <span class="st">"pROC"</span>, <span class="st">"readxl"</span>, <span class="st">"gbm"</span>, <span class="st">"reshape2"</span>, <span class="st">"dplyr"</span>, <span class="st">"writexl"</span>, </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gghighlight"</span>, <span class="st">"hrbrthemes"</span>, <span class="st">"tsibble"</span>, <span class="st">"feasts"</span>, <span class="st">"fable"</span>, <span class="st">"tsibbledata"</span>, <span class="st">"forecast"</span>, </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fpp"</span>, <span class="st">"fpp2"</span>, <span class="st">"fpp3"</span>, <span class="st">"fabletools"</span>, <span class="st">"knitr"</span>, <span class="st">"ggpubr"</span>, <span class="st">"gridExtra"</span>, <span class="st">"GGally"</span>, <span class="st">"slider"</span>, </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"car"</span>, <span class="st">"shiny"</span>, <span class="st">"glue"</span>, <span class="st">"broom"</span>, <span class="st">"kableExtra"</span>, <span class="st">"gt"</span>, <span class="st">"seasonal"</span>, <span class="st">"latex2exp"</span>, <span class="st">"ggfortify"</span>, </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"urca"</span>, <span class="st">"tseries"</span>, <span class="st">"janitor"</span>, <span class="st">"hts"</span>, <span class="st">"zoo"</span>, <span class="st">"timetk"</span>, <span class="st">"plotly"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="indlæs-data" class="level1">
+<h1>Indlæs data</h1>
+<p>Vi starter med at indlæse data, samt at konvertere datasættet til en tibble</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dataframe_dk <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"Ledige.xlsx"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>dataframe_dk <span class="ot">&lt;-</span> dataframe_dk <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Dato =</span> <span class="fu">yearmonth</span>(Dato))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Konverter data til en tsibble</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>tsibble_data <span class="ot">&lt;-</span> dataframe_dk<span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tsibble</span>(<span class="at">index =</span> Dato)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="visualisering" class="level1">
+<h1>Visualisering</h1>
+<p>Datasættet bliver visualiseret, for at få en ide om hvordan det ser ud.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Omdan data til et format der kan bruges af plotly</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ts_data <span class="ot">&lt;-</span> tsibble_data <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Tid =</span> Dato, Værdi <span class="ot">=</span> Antal_ledige)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Konverter 'Tid' kolonnen til Date format</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ts_data <span class="ot">&lt;-</span> ts_data <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Tid =</span> <span class="fu">as.Date</span>(Tid))</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Lav et interaktivt plotly plot</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ly</span>(ts_data, <span class="at">x =</span> <span class="sc">~</span>Tid, <span class="at">y =</span> <span class="sc">~</span>Værdi, <span class="at">type =</span> <span class="st">'scatter'</span>, <span class="at">mode =</span> <span class="st">'lines'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">title =</span> <span class="st">'Interaktiv Tidsserie Plot'</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">'Tid'</span>, <span class="at">tickformat =</span> <span class="st">"%Y-%m"</span>, <span class="at">tickmode =</span> <span class="st">"auto"</span>, <span class="at">nticks =</span> <span class="dv">20</span>),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">'Antal Ledige'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-f78bc49d783516bb0e31" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-f78bc49d783516bb0e31">{"x":{"visdat":{"7a2cc5e4433":["function () ","plotlyVisDat"]},"cur_data":"7a2cc5e4433","attrs":{"7a2cc5e4433":{"x":{},"y":{},"mode":"lines","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Interaktiv Tidsserie Plot","xaxis":{"domain":[0,1],"automargin":true,"title":"Tid","tickformat":"%Y-%m","tickmode":"auto","nticks":20},"yaxis":{"domain":[0,1],"automargin":true,"title":"Antal Ledige"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["2007-01-01","2007-02-01","2007-03-01","2007-04-01","2007-05-01","2007-06-01","2007-07-01","2007-08-01","2007-09-01","2007-10-01","2007-11-01","2007-12-01","2008-01-01","2008-02-01","2008-03-01","2008-04-01","2008-05-01","2008-06-01","2008-07-01","2008-08-01","2008-09-01","2008-10-01","2008-11-01","2008-12-01","2009-01-01","2009-02-01","2009-03-01","2009-04-01","2009-05-01","2009-06-01","2009-07-01","2009-08-01","2009-09-01","2009-10-01","2009-11-01","2009-12-01","2010-01-01","2010-02-01","2010-03-01","2010-04-01","2010-05-01","2010-06-01","2010-07-01","2010-08-01","2010-09-01","2010-10-01","2010-11-01","2010-12-01","2011-01-01","2011-02-01","2011-03-01","2011-04-01","2011-05-01","2011-06-01","2011-07-01","2011-08-01","2011-09-01","2011-10-01","2011-11-01","2011-12-01","2012-01-01","2012-02-01","2012-03-01","2012-04-01","2012-05-01","2012-06-01","2012-07-01","2012-08-01","2012-09-01","2012-10-01","2012-11-01","2012-12-01","2013-01-01","2013-02-01","2013-03-01","2013-04-01","2013-05-01","2013-06-01","2013-07-01","2013-08-01","2013-09-01","2013-10-01","2013-11-01","2013-12-01","2014-01-01","2014-02-01","2014-03-01","2014-04-01","2014-05-01","2014-06-01","2014-07-01","2014-08-01","2014-09-01","2014-10-01","2014-11-01","2014-12-01","2015-01-01","2015-02-01","2015-03-01","2015-04-01","2015-05-01","2015-06-01","2015-07-01","2015-08-01","2015-09-01","2015-10-01","2015-11-01","2015-12-01","2016-01-01","2016-02-01","2016-03-01","2016-04-01","2016-05-01","2016-06-01","2016-07-01","2016-08-01","2016-09-01","2016-10-01","2016-11-01","2016-12-01","2017-01-01","2017-02-01","2017-03-01","2017-04-01","2017-05-01","2017-06-01","2017-07-01","2017-08-01","2017-09-01","2017-10-01","2017-11-01","2017-12-01","2018-01-01","2018-02-01","2018-03-01","2018-04-01","2018-05-01","2018-06-01","2018-07-01","2018-08-01","2018-09-01","2018-10-01","2018-11-01","2018-12-01","2019-01-01","2019-02-01","2019-03-01","2019-04-01","2019-05-01","2019-06-01","2019-07-01","2019-08-01","2019-09-01","2019-10-01","2019-11-01","2019-12-01","2020-01-01","2020-02-01","2020-03-01","2020-04-01","2020-05-01","2020-06-01","2020-07-01","2020-08-01","2020-09-01","2020-10-01","2020-11-01","2020-12-01","2021-01-01","2021-02-01","2021-03-01","2021-04-01","2021-05-01","2021-06-01","2021-07-01","2021-08-01","2021-09-01","2021-10-01","2021-11-01","2021-12-01","2022-01-01","2022-02-01","2022-03-01","2022-04-01","2022-05-01","2022-06-01","2022-07-01","2022-08-01","2022-09-01","2022-10-01","2022-11-01","2022-12-01","2023-01-01","2023-02-01","2023-03-01","2023-04-01","2023-05-01","2023-06-01","2023-07-01","2023-08-01","2023-09-01","2023-10-01","2023-11-01","2023-12-01","2024-01-01","2024-02-01","2024-03-01","2024-04-01"],"y":[132803.10000000001,128643,120246.3,109025.89999999999,105678.60000000001,98675.199999999997,87919.600000000006,90890.100000000006,87838.100000000006,85673.899999999994,84365.399999999994,87390.899999999994,89633.399999999994,84600.100000000006,79531.100000000006,69988.199999999997,67828.300000000003,64704.099999999999,58509.800000000003,63511.699999999997,65570.300000000003,69725.300000000003,77164.899999999994,88540,103748.2,115333,124470.8,124312.7,128664.39999999999,130046.89999999999,116269.60000000001,130143.8,135604.20000000001,143075,150851.89999999999,161362.10000000001,179410.89999999999,184856.89999999999,182318.5,162773.29999999999,164430.10000000001,158162.29999999999,137467.60000000001,151629.89999999999,155015.70000000001,157575.70000000001,161749.10000000001,170023,181737.39999999999,179235.60000000001,174938.79999999999,157539.20000000001,161769.20000000001,155836.20000000001,134856.10000000001,147081.5,150124.20000000001,152527.39999999999,156971.39999999999,161736.70000000001,173853.29999999999,179484.10000000001,173359.79999999999,160125.39999999999,163470,158834.60000000001,140534.89999999999,150883.60000000001,153953.60000000001,155728.60000000001,160451.79999999999,168074.5,175184.5,173202.79999999999,168399.60000000001,155547.89999999999,153278.70000000001,149790.60000000001,135909.89999999999,141822.89999999999,142752.20000000001,144783.29999999999,148330.60000000001,152849.5,154645,153639.60000000001,145586.5,131565.89999999999,131469.5,129339.39999999999,119238.5,125169.39999999999,124691.8,125964.7,128022,132970.70000000001,141659.29999999999,141598.29999999999,134144.20000000001,122922.3,122856.7,120215.8,110649.89999999999,115454.3,113978.5,114426.3,115969.7,119786,128316.89999999999,126337.89999999999,119593.39999999999,108943.7,109060,106700.5,102632.89999999999,106811.39999999999,106260.3,108591.89999999999,112012.89999999999,116966.3,126848.7,127530.3,122258.3,112626.2,113003.8,112079.2,110717.10000000001,114367.5,112256.7,113602.8,114187.3,116222.5,122775.2,121732.5,118024.39999999999,106406.5,105465,103111.7,99374.100000000006,103811.89999999999,101894.60000000001,103585.8,104316.8,106901.39999999999,113896.2,113969.5,109191.10000000001,98625,99121.100000000006,100074.3,98434.899999999994,102957.60000000001,100442.2,102046,103859.89999999999,107088.89999999999,114845.10000000001,114573,123243.89999999999,143757,149952.20000000001,146226.89999999999,139327.39999999999,134872.70000000001,128963.89999999999,127235.60000000001,125491.60000000001,128063.3,140939.79999999999,145235.89999999999,134913.89999999999,123596,110173.89999999999,103553.3,101278.89999999999,96871.5,88264.5,82962.300000000003,77037.899999999994,69789.5,83927.800000000003,81287.800000000003,76983.199999999997,73756.300000000003,71081.5,73156.800000000003,77425.699999999997,77578.600000000006,72571.699999999997,72566,74364.600000000006,72840.5,89075,90257.399999999994,86822.699999999997,83573.300000000003,79820.5,80313.5,83889.199999999997,85450.699999999997,80511.399999999994,80629.100000000006,81208.699999999997,78823.699999999997,95860.5,95931.899999999994,92280.5,88057.699999999997],"mode":"lines","type":"scatter","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualiser data med gg_season</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>tsibble_data <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gg_season</span>(Antal_ledige, <span class="at">labels =</span> <span class="st">"both"</span>) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Antal ledige"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Sæsonplot: Arbejdsløshedstal i Danmark"</span>) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MundtligForecasting_files/figure-html/visualisering-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="stl-og-spikinessstørste-sæsonudsving" class="level1">
+<h1>STL og spikiness/største sæsonudsving</h1>
+<p>Nu undersøges datasættet for spikiness, for at finde ud af hvor stabilt datasættet er, samt at finde det største udsving. Dette gøres for at få en ide om hvilke modeller der kan være passende at anvende. Der anvendes også en STL dekomposition, for at undersøge datasættet for trend og sæson, ligeledes for at vurdere hvilke modeller der kan være passende.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> tsibble_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="at">stl =</span> <span class="fu">STL</span>(Antal_ledige <span class="sc">~</span> <span class="fu">season</span>(<span class="at">window =</span> <span class="st">"periodic"</span>)))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Beregn komponenter af STL-dekomposition</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>decomp <span class="ot">&lt;-</span> <span class="fu">components</span>(fit)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot STL-dekompositionen</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(decomp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MundtligForecasting_files/figure-html/STL-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identificer den måned med det største sæsonudsving</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>seasonal_peak <span class="ot">&lt;-</span> decomp <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(season_adjust <span class="sc">==</span> <span class="fu">max</span>(season_adjust, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Dato, season_adjust)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Print resultatet</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(seasonal_peak)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+      Dato season_adjust
+     &lt;mth&gt;         &lt;dbl&gt;
+1 2010 mar       173896.</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Beregn spikiness</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>remainder <span class="ot">&lt;-</span> decomp<span class="sc">$</span>remainder</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Funktion til at beregne spikiness</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>calculate_spikiness <span class="ot">&lt;-</span> <span class="cf">function</span>(remainder) {</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(remainder)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  leave_one_out_var <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="cf">function</span>(i) <span class="fu">var</span>(remainder[<span class="sc">-</span>i]))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  spikiness <span class="ot">&lt;-</span> <span class="fu">var</span>(leave_one_out_var)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(spikiness)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>spikiness_value <span class="ot">&lt;-</span> <span class="fu">calculate_spikiness</span>(remainder)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Print spikiness</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Spikiness:"</span>, spikiness_value))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Spikiness: 81163431764.0827"</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tsibble_data <span class="ot">&lt;-</span> tsibble_data <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Dato) <span class="sc">&gt;=</span> <span class="dv">2010</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Det konstateres at datasættet med stor sandynlighed har sæson. Der kan ligeledes anes en trend indtil 2020, hvor COVID-19 havde sin indflydelse. COVID-19 betragtes som en outlier. Det samme gælder for året 2009, hvor der var finanskrise. Derfor sorteres observationer før 2010 fra. Det vurderes at trenden efter 2020 ikke er den samme som inden, og derfor beholdes obsevationer efter COVID-19</p>
+</section>
+<section id="manuel-sarima" class="level1">
+<h1>Manuel (S)ARIMA</h1>
+<p>Her vurderes det hvilke ARIMA og SARIMA modeller der bør tages betragtning til at forecaste Ledighed.</p>
+<section id="test-om-data-er-stationær" class="level2">
+<h2 class="anchored" data-anchor-id="test-om-data-er-stationær">Test om data er stationær</h2>
+<p>Før udføres en ADF test, for at vurdere om datasættet er stationært.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Antag at original_ts er din tidsserie for de originale data</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>original_ts <span class="ot">&lt;-</span> <span class="fu">ts</span>(tsibble_data<span class="sc">$</span>Antal_ledige, <span class="at">frequency =</span> <span class="dv">12</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2010</span>, <span class="dv">1</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Udfør ADF-testen på de originale data</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>adf_test_original <span class="ot">&lt;-</span> <span class="fu">ur.df</span>(original_ts, <span class="at">type =</span> <span class="st">"drift"</span>, <span class="at">selectlags =</span> <span class="st">"AIC"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Udtræk nødvendige værdier fra ADF-testen</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>adf_summary_original <span class="ot">&lt;-</span> <span class="fu">summary</span>(adf_test_original)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>test_statistic_original <span class="ot">&lt;-</span> adf_summary_original<span class="sc">@</span>testreg<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>critical_values_original <span class="ot">&lt;-</span> adf_summary_original<span class="sc">@</span>cval</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Print resultaterne for de originale data</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ADF Test Resultater for Originale Data:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>ADF Test Resultater for Originale Data:</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Test-statistik:"</span>, test_statistic_original, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test-statistik: -2.320491 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Kritiske værdier:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Kritiske værdier:</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"1% niveau:"</span>, critical_values_original[<span class="st">"tau2"</span>, <span class="st">"1pct"</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>1% niveau: -3.46 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"5% niveau:"</span>, critical_values_original[<span class="st">"tau2"</span>, <span class="st">"5pct"</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>5% niveau: -2.88 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"10% niveau:"</span>, critical_values_original[<span class="st">"tau2"</span>, <span class="st">"10pct"</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>10% niveau: -2.57 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluér om de originale data er stationære</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (test_statistic_original <span class="sc">&lt;</span> critical_values_original[<span class="st">"tau2"</span>, <span class="st">"5pct"</span>]) {</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Konklusion: De originale data er stationære.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Konklusion: De originale data er ikke stationære.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Konklusion: De originale data er ikke stationære.</code></pre>
+</div>
+</div>
+<p>Efter udførelse af ADF testen, vurderes det, at datasættet ikke er stationært, da Test-statistikken er større end alle tre niveauer.</p>
+</section>
+<section id="sæsondifferenciering-og-test-om-data-er-stationære" class="level2">
+<h2 class="anchored" data-anchor-id="sæsondifferenciering-og-test-om-data-er-stationære">Sæsondifferenciering og test om data er stationære</h2>
+<p>Da datasættet ikke er stationært og det vurderes at der er stærk sæson i datasættet, udføres sæson differencieres der. Derefter kører ADF testen igen, for at tjekke om datasættet derefter er stationært.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Anvend sæsondifferenciering på tidsserien</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>tsibble_data <span class="ot">&lt;-</span> tsibble_data <span class="sc">%&gt;%</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Seasonal_Diff =</span> <span class="fu">difference</span>(Antal_ledige, <span class="at">lag =</span> <span class="dv">12</span>))</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Konverter sæsondifferencierede data til en tidsserie objekt</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>seasonal_diff<span class="ot">&lt;-</span> <span class="fu">ts</span>(tsibble_data<span class="sc">$</span>Seasonal_Diff, <span class="at">frequency =</span> <span class="dv">12</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2009</span>, <span class="dv">1</span>))</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fjern NA-værdier før ADF-test</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>seasonal_diff <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(seasonal_diff)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Udfør ADF-test på de sæsondifferencierede Box-Cox transformerede data</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>adf_test_seasonal_diff <span class="ot">&lt;-</span> <span class="fu">ur.df</span>(seasonal_diff, <span class="at">type =</span> <span class="st">"drift"</span>, <span class="at">selectlags =</span> <span class="st">"AIC"</span>)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Udtræk nødvendige værdier</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>adf_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(adf_test_seasonal_diff)</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>test_statistic <span class="ot">&lt;-</span> adf_summary<span class="sc">@</span>testreg<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>critical_values <span class="ot">&lt;-</span> adf_summary<span class="sc">@</span>cval</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Print resultaterne</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ADF Test Resultater:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>ADF Test Resultater:</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Test-statistik:"</span>, test_statistic, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test-statistik: -3.477652 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Kritiske værdier:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Kritiske værdier:</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"1% niveau:"</span>, critical_values[<span class="st">"tau2"</span>, <span class="st">"1pct"</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>1% niveau: -3.46 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"5% niveau:"</span>, critical_values[<span class="st">"tau2"</span>, <span class="st">"5pct"</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>5% niveau: -2.88 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"10% niveau:"</span>, critical_values[<span class="st">"tau2"</span>, <span class="st">"10pct"</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>10% niveau: -2.57 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluér om data er stationære</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (test_statistic <span class="sc">&lt;</span> critical_values[<span class="st">"tau2"</span>, <span class="st">"5pct"</span>]) {</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Konklusion: Dataene er stationære.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Konklusion: Dataene er ikke stationære.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Konklusion: Dataene er stationære.</code></pre>
+</div>
+</div>
+<p>Da Test-statistikken er mindre end alle tre nivauer afvises nul hypotesen og det vurderes at datasættet er stationært.</p>
+</section>
+<section id="acf-plot---valg-af-modeller" class="level2">
+<h2 class="anchored" data-anchor-id="acf-plot---valg-af-modeller">ACF Plot - Valg af modeller</h2>
+<p>ACF og PACF plot visualiseres, for at vurdere hvilke modeller der kan være passende til forecasting af datasætte.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>tsibble_data_clean <span class="ot">&lt;-</span> tsibble_data <span class="sc">%&gt;%</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Seasonal_Diff))</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">nrow =</span> <span class="dv">1</span>))</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot ACF</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>acf_plot <span class="ot">&lt;-</span> <span class="fu">Acf</span>(tsibble_data_clean<span class="sc">$</span>Seasonal_Diff, <span class="at">main=</span><span class="st">"ACF for Differenced Series"</span>, <span class="at">lag.max =</span> <span class="dv">48</span>)</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot PACF</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>pacf_plot <span class="ot">&lt;-</span> <span class="fu">Pacf</span>(tsibble_data_clean<span class="sc">$</span>Seasonal_Diff, <span class="at">main=</span><span class="st">"PACF for Differenced Series"</span>, <span class="at">lag.max =</span> <span class="dv">48</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MundtligForecasting_files/figure-html/ACF%20og%20PACF-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>ACF</p>
+<p>En tydelig spike ved lag 12 indikerer at sæsoncycle er på 12 måneder og dermed årlig.</p>
+<ul>
+<li><p>Viser en langsom aftagende sæsonmæssig korrelation, som tyder på en stærk sæsonkomponent i dataene.</p></li>
+<li><p>Den langsomme aftagning efter det første lag kan indikere behovet for yderligere differenciering eller en model med en sæsonkomponent.</p></li>
+<li><p>Den høje autokorrelation ved lag 1 indikerer, at en MA(1) model kan være passende. Da der er signifikante korrelationer efter lag 1, kan det også være nyttigt at prøve en højere ordre MA-model, som f.eks. MA(2).</p></li>
+</ul>
+<p>PACF</p>
+<ul>
+<li>En skarp cut-off efter lag 1 og 2 og enkelte spikes ved sæsonlags, hvilket kunne indikere en AR(1) model.</li>
+</ul>
+<p>Dette leder os til følgende modeller at arbejde videre med:</p>
+<p>ACF plottet har make signifikante spikes, og indkiationer for aftagende korelation over tid. Det kan betyde at der er sæson i data. Derfor vælges SARIMA modeller.</p>
+<section id="manuel-sarima-1" class="level3">
+<h3 class="anchored" data-anchor-id="manuel-sarima-1">Manuel SARIMA</h3>
+<p>Følgende modeller vælges:</p>
+<p>SARIMA(1,1,1), (1, 1, 0)(12)</p>
+<p>SARIMA(1,1,1), (1, 1, 1)(12)</p>
+<p>SARIMA(2,1,1), (1, 1, 0)(12)</p>
+<p>SARIMA(2,1,1), (1, 1, 1)(12)</p>
+</section>
+</section>
+<section id="auto-arima" class="level2">
+<h2 class="anchored" data-anchor-id="auto-arima">Auto ARIMA</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co">#autoarima</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Konverter data til en tsibble</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>tsibble_data_original <span class="ot">&lt;-</span> dataframe_dk <span class="sc">%&gt;%</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Dato =</span> <span class="fu">yearmonth</span>(Dato)) <span class="sc">%&gt;%</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tsibble</span>(<span class="at">index =</span> Dato)</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtrer data til de relevante perioder</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>tsibble_data_original <span class="ot">&lt;-</span> tsibble_data_original <span class="sc">%&gt;%</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Dato) <span class="sc">&gt;=</span> <span class="dv">2010</span>)</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Konverter dataene til et tidsserie objekt</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>original_ts <span class="ot">&lt;-</span> <span class="fu">ts</span>(tsibble_data_original<span class="sc">$</span>Antal_ledige, <span class="at">frequency =</span> <span class="dv">12</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2010</span>, <span class="dv">1</span>))</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Kør auto.arima for at finde den bedste ARIMA model</span></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>best_arima_model <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(original_ts, </span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>                               <span class="at">seasonal =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>                               <span class="at">stepwise =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>                               <span class="at">approximation =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Udskriv opsummeringen af den bedste model fundet af auto.arima</span></span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best_arima_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: original_ts 
+ARIMA(2,0,2)(1,1,0)[12] 
+
+Coefficients:
+         ar1      ar2      ma1      ma2     sar1
+      1.8781  -0.8924  -0.3804  -0.4039  -0.3865
+s.e.  0.0600   0.0561   0.0955   0.0796   0.0742
+
+sigma^2 = 15366760:  log likelihood = -1551
+AIC=3114.01   AICc=3114.56   BIC=3132.46
+
+Training set error measures:
+                    ME     RMSE      MAE        MPE     MAPE      MASE
+Training set -464.4972 3721.284 2250.804 -0.4361723 1.922344 0.1685566
+                    ACF1
+Training set 0.008032401</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(best_arima_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MundtligForecasting_files/figure-html/AutoArima-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Ljung-Box test
+
+data:  Residuals from ARIMA(2,0,2)(1,1,0)[12]
+Q* = 31.067, df = 19, p-value = 0.0397
+
+Model df: 5.   Total lags used: 24</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Series: original_ts </span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co">#ARIMA(2,0,2)(1,1,0)[12] </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Auto ARIMA har defineret følgende model:</p>
+<p>#ARIMA(2,0,2)(1,1,0)[12]</p>
+</section>
+</section>
+<section id="ets-model" class="level1">
+<h1>ETS model</h1>
+<p>I det følgende defineres en ETS model. Exponential Smoothing modeller er særligt godt til at håndtere outliers og håndtere sæson og trendelementer.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>dataframe_dk <span class="ot">&lt;-</span> dataframe_dk <span class="sc">%&gt;%</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Dato =</span> <span class="fu">yearmonth</span>(Dato))</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Konverter data til en tsibble</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>tsibble_data_ets <span class="ot">&lt;-</span> dataframe_dk<span class="sc">%&gt;%</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tsibble</span>(<span class="at">index =</span> Dato)</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>tsibble_data_ets <span class="ot">&lt;-</span> tsibble_data_ets <span class="sc">%&gt;%</span></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Dato) <span class="sc">&gt;=</span> <span class="dv">2010</span>)</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Tilpas ETS modellen</span></span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>fit_ets <span class="ot">&lt;-</span> tsibble_data_ets <span class="sc">|&gt;</span></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="fu">ETS</span>(Antal_ledige))</span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Rapportér den valgte model</span></span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a><span class="fu">report</span>(fit_ets)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: Antal_ledige 
+Model: ETS(M,N,M) 
+  Smoothing parameters:
+    alpha = 0.7633118 
+    gamma = 0.2366882 
+
+  Initial states:
+     l[0]     s[0]     s[-1]     s[-2]     s[-3]     s[-4]     s[-5]    s[-6]
+ 161443.7 1.015423 0.9840365 0.9498474 0.9256863 0.9326126 0.8738492 1.010976
+    s[-7]     s[-8]    s[-9]   s[-10]   s[-11]
+ 1.011049 0.9945529 1.096414 1.102249 1.103303
+
+  sigma^2:  0.0018
+
+     AIC     AICc      BIC 
+3836.300 3839.377 3883.513 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">components</span>(fit_ets) <span class="sc">|&gt;</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>() <span class="sc">+</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"ETS(M,N,M) komponenter"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MundtligForecasting_files/figure-html/ETS-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>ETS koden har defineret at den bedste model til dette datasæt er ETS(M,N,M).</p>
+<ul>
+<li><p><strong>Error (Fejl) - Multiplikativ (M):</strong></p>
+<ul>
+<li><p><strong>Multiplikativ fejl:</strong> I denne model multipliceres fejlkomponenten med de øvrige komponenter. Dette betyder, at variabiliteten af dataene afhænger af niveauet af tidsserien.</p></li>
+<li><p>Dette betyder, at fejlene skalerer med niveauet af tidsserien.</p></li>
+</ul></li>
+<li><p><strong>Trend - Ingen trend (N):</strong></p>
+<ul>
+<li><strong>Ingen trend:</strong> Der er ingen underliggende trendkomponent i modellen. Dette betyder, at niveauet af tidsserien forbliver konstant over tid, når der ikke tages højde for sæsonvariationer og fejl.</li>
+</ul></li>
+<li><p><strong>Seasonal (Sæson) - Multiplikativ (M):</strong></p>
+<ul>
+<li><strong>Multiplikativ sæson:</strong> Sæsonkomponenten multipliceres med niveaukomponenten, hvilket betyder, at sæsonudsvingene varierer proportionalt med niveauet af tidsserien.</li>
+</ul></li>
+</ul>
+<p>En ETS(M,N,M)-model antager, at dataene har en multiplikativ fejlstruktur og en multiplikativ sæsonkomponent, men ingen underliggende trend. Dette betyder, at modellen er velegnet til tidsserier, hvor sæsonvariationerne varierer proportionalt med niveauet af serien, og hvor der ikke er nogen langsigtet trend.</p>
+</section>
+<section id="evaluering" class="level1">
+<h1>Evaluering</h1>
+<p>Modellerne krydsvalideres for at vurdere modellens performance. Der vurderes på følgende metrikker: RMSE, MAE og MAPE.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> tsibble_data <span class="sc">|&gt;</span> </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="sc">-</span><span class="fu">n</span>()) <span class="sc">|&gt;</span>  <span class="co"># Fjerner den sidste observation for at teste modelpræcisionen</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stretch_tsibble</span>(<span class="at">.init =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span>  <span class="co"># Initialiserer de første 20 datapunkter for modeltræning</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">SARIMA_111_101 =</span> <span class="fu">ARIMA</span>(Antal_ledige <span class="sc">~</span> <span class="fu">pdq</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">PDQ</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="at">period =</span> <span class="dv">12</span>)),</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">SARIMA_111_111 =</span> <span class="fu">ARIMA</span>(Antal_ledige <span class="sc">~</span> <span class="fu">pdq</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">PDQ</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="at">period =</span> <span class="dv">12</span>)),</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">SARIMA_211_110 =</span> <span class="fu">ARIMA</span>(Antal_ledige <span class="sc">~</span> <span class="fu">pdq</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">PDQ</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="at">period =</span> <span class="dv">12</span>)),</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">SARIMA_211_111 =</span> <span class="fu">ARIMA</span>(Antal_ledige <span class="sc">~</span> <span class="fu">pdq</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">PDQ</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="at">period =</span> <span class="dv">12</span>)),</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">AutoSARIMA_202_110 =</span> <span class="fu">ARIMA</span>(Antal_ledige <span class="sc">~</span> <span class="fu">pdq</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">PDQ</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="at">period =</span> <span class="dv">12</span>)),</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ETS</span>(Antal_ledige)</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span>  <span class="co"># Laver en 1-step forudsigelse</span></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">accuracy</span>(tsibble_data) <span class="sc">|&gt;</span>  <span class="co"># Beregner nøjagtighedsstatistikker baseret på faktiske data</span></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(.model, RMSE, MAPE, MAE)  <span class="co"># Vælger kun modellens navn, RMSE og MAPE for visning</span></span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Vis resultaterne</span></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  .model              RMSE  MAPE   MAE
+  &lt;chr&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 AutoSARIMA_202_110 4609.  2.41 2664.
+2 ETS(Antal_ledige)  5607.  3.38 3675.
+3 SARIMA_111_101     4588.  2.44 2690.
+4 SARIMA_111_111     4617.  2.46 2717.
+5 SARIMA_211_110     4655.  2.51 2756.
+6 SARIMA_211_111     4648.  2.48 2736.</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Konverter til en pæn tabel</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"html"</span>, <span class="at">caption =</span> <span class="st">"Model Performance Metrics"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>, <span class="st">"responsive"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<div class="table-responsive">
+<table class="table table-striped table-hover table-condensed table-sm small" data-quarto-postprocess="true">
+<caption>Model Performance Metrics</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">.model</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">RMSE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">MAPE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">MAE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">AutoSARIMA_202_110</td>
+<td style="text-align: right;">4608.996</td>
+<td style="text-align: right;">2.411148</td>
+<td style="text-align: right;">2664.162</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ETS(Antal_ledige)</td>
+<td style="text-align: right;">5607.292</td>
+<td style="text-align: right;">3.379442</td>
+<td style="text-align: right;">3675.152</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SARIMA_111_101</td>
+<td style="text-align: right;">4588.134</td>
+<td style="text-align: right;">2.444413</td>
+<td style="text-align: right;">2690.445</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SARIMA_111_111</td>
+<td style="text-align: right;">4616.581</td>
+<td style="text-align: right;">2.456145</td>
+<td style="text-align: right;">2717.270</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SARIMA_211_110</td>
+<td style="text-align: right;">4655.164</td>
+<td style="text-align: right;">2.507275</td>
+<td style="text-align: right;">2755.573</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SARIMA_211_111</td>
+<td style="text-align: right;">4648.008</td>
+<td style="text-align: right;">2.478035</td>
+<td style="text-align: right;">2736.228</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+</div>
+</div>
+<p>Det ses her at de modeller der perfomerbedst er</p>
+<p>SARIMA_111_101 og AutoSARIMA_202_110</p>
+<p>De to bedste modeller udvælges og reidualerne samt ljungbox test udføres for at vurdere hvilken model der er mest passende.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>best_model1 <span class="ot">&lt;-</span> results <span class="sc">%&gt;%</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(RMSE) <span class="sc">%&gt;%</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1</span>)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Vis de bedste modeller</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(best_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  .model          RMSE  MAPE   MAE
+  &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 SARIMA_111_101 4588.  2.44 2690.</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>ts_data <span class="ot">&lt;-</span> <span class="fu">ts</span>(tsibble_data<span class="sc">$</span>Antal_ledige, <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>best_model <span class="ot">&lt;-</span> <span class="fu">Arima</span>(ts_data, <span class="at">order=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">seasonal=</span><span class="fu">list</span>(<span class="at">order=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">period=</span><span class="dv">12</span>))</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>nextbest_model <span class="ot">&lt;-</span> <span class="fu">Arima</span>(ts_data, <span class="at">order=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">2</span>), <span class="at">seasonal=</span><span class="fu">list</span>(<span class="at">order=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">period=</span><span class="dv">12</span>))</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Tjek residualerne</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(best_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MundtligForecasting_files/figure-html/modelvalg-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Ljung-Box test
+
+data:  Residuals from ARIMA(1,1,1)(1,1,0)[12]
+Q* = 32.752, df = 21, p-value = 0.04904
+
+Model df: 3.   Total lags used: 24</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(nextbest_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MundtligForecasting_files/figure-html/modelvalg-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Ljung-Box test
+
+data:  Residuals from ARIMA(2,0,2)(1,1,0)[12]
+Q* = 31.067, df = 19, p-value = 0.0397
+
+Model df: 5.   Total lags used: 24</code></pre>
+</div>
+</div>
+<p><strong>Best_model</strong></p>
+<ul>
+<li><p><strong>Tidsserie plot af residualer:</strong> Der er en tydelig spike omkring lag 10, hvilket kan indikere en outlier eller en fejl i modellen. Ellers ser residualerne ud til at være tilfældigt fordelt omkring nul.</p></li>
+<li><p><strong>ACF plot af residualer:</strong> Der er nogle signifikante spikes, især ved lavere lags (f.eks. lag 1), hvilket kan indikere, at der er autokorrelation tilbage i residualerne, som modellen ikke har fanget.</p></li>
+<li><p><strong>Histogram af residualer:</strong> Histogrammet viser, at residualerne ikke er perfekt normalfordelte. Der er en vis skævhed og outliers, som kan ses i halerne af fordelingen.</p></li>
+<li><p>Ljungbox testen viser en værdi på 0,049 hvilket ligger marginalt tæt på 0,05</p></li>
+</ul>
+<p><strong>Nextbest_Model</strong></p>
+<ul>
+<li><p><strong>Tidsserie plot af residualer:</strong> Den store spike omkring lag 10 bør undersøges nærmere, da det kan være en outlier eller en problematisk observation.</p></li>
+<li><p><strong>ACF plot af residualer:</strong> De få signifikante spikes indikerer, at der stadig er autokorrelation tilbage i residualerne. Dette kan betyde, at modellen kan forbedres yderligere.</p></li>
+<li><p><strong>Histogram af residualer:</strong> Residualerne er ikke perfekt normalfordelte og viser en vis skævhed. Dette kan indikere, at modellen ikke fuldstændigt fanger dataenes struktur.</p></li>
+<li><p>Ljungboxtesten viser en p-værdi på 0,0397 hvilket bør ligge over 0,05 hvilke betyder at nulhyptosen ikke kan afvises.</p></li>
+</ul>
+<p>På baggrund af disse observationer udvælges best_model: SARIMA_111_101</p>
+</section>
+<section id="forecasting" class="level1">
+<h1>Forecasting</h1>
+<p>I det følgende afsnit forecastes de efterfølgende 12 måneder.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>best_model <span class="ot">&lt;-</span> tsibble_data <span class="sc">%&gt;%</span> </span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">SARIMA_111_110 =</span> <span class="fu">ARIMA</span>(Antal_ledige <span class="sc">~</span> <span class="fu">pdq</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">PDQ</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="at">period =</span> <span class="dv">12</span>))</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Tjek residualer</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>best_model <span class="sc">|&gt;</span> <span class="fu">gg_tsresiduals</span>(<span class="at">lag=</span><span class="dv">48</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MundtligForecasting_files/figure-html/Forecasting-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>augmented_fit <span class="ot">&lt;-</span> <span class="fu">augment</span>(best_model)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(best_model) <span class="sc">|&gt;</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">"SARIMA_111_110"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">features</span>(.innov, ljung_box, <span class="at">lag=</span><span class="dv">24</span>, <span class="at">dof=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .model         lb_stat lb_pvalue
+  &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;
+1 SARIMA_111_110    32.8    0.0490</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>best_model <span class="sc">%&gt;%</span> </span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h=</span><span class="dv">12</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(tsibble_data) <span class="sc">+</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Ledighedstal"</span>,</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Ledige"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MundtligForecasting_files/figure-html/Forecasting-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>forecast_result <span class="ot">&lt;-</span> best_model <span class="sc">%&gt;%</span> <span class="fu">forecast</span>(<span class="at">h =</span> <span class="dv">12</span>)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Konverter forecast_result til en tibble</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>forecast_result_tibble <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(forecast_result)</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Lav en flot tabel med kableExtra</span></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>forecast_result_tibble <span class="sc">%&gt;%</span></span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Dato, .mean) <span class="sc">%&gt;%</span></span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Forecast Date</span><span class="st">`</span> <span class="ot">=</span> Dato, <span class="st">`</span><span class="at">Forecast Mean</span><span class="st">`</span> <span class="ot">=</span> .mean) <span class="sc">%&gt;%</span></span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"html"</span>, <span class="at">caption =</span> <span class="st">"Forecast Results"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>, <span class="st">"responsive"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<div class="table-responsive">
+<table class="table table-striped table-hover table-condensed table-sm small" data-quarto-postprocess="true">
+<caption>Forecast Results</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Forecast Date</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Forecast Mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2024 maj</td>
+<td style="text-align: right;">84128.36</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2024 jun</td>
+<td style="text-align: right;">85083.56</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2024 jul</td>
+<td style="text-align: right;">88889.41</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2024 aug</td>
+<td style="text-align: right;">89890.95</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2024 sep</td>
+<td style="text-align: right;">84922.56</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2024 okt</td>
+<td style="text-align: right;">84991.42</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2024 nov</td>
+<td style="text-align: right;">86046.38</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2024 dec</td>
+<td style="text-align: right;">83997.17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2025 jan</td>
+<td style="text-align: right;">100720.98</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2025 feb</td>
+<td style="text-align: right;">101225.78</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2025 mar</td>
+<td style="text-align: right;">97658.92</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2025 apr</td>
+<td style="text-align: right;">93815.85</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(forecast_result) <span class="sc">+</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Forecast af ledighedstal i Danmark"</span>,</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Antal personer"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MundtligForecasting_files/figure-html/Forecasting-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ny-løsning---forecasting-af-hierachial-timeseries" class="level1">
+<h1>Ny løsning - Forecasting af Hierachial Timeseries</h1>
+<p>For at forsøge at forbedre modellen indhentes yderligere data. I det følgende afsnit udføres der forecasting af hierakiske datasæt. Det øverste niveau er Det totale antal ledige. Der tilføjes yderligere e niveau, nemlig ledighed fordel på mænd og kvinder.</p>
+<p>Data indlæses og renses og derefter kombineres datasættet med ledighed fordelt på mænd og kvinder</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Læs data fra Excel-ark</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="st">"Ledigekøn.xlsx"</span>  <span class="co"># Udskift med den faktiske sti til din fil</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>ledigekon <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(file_path)  <span class="co"># Tilpas hvis nødvendigt</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Rens kolonnenavne</span></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>ledigekon <span class="ot">&lt;-</span> ledigekon <span class="sc">%&gt;%</span></span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>()</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ledigekon) <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"^x"</span>, <span class="st">""</span>, <span class="fu">colnames</span>(ledigekon))</span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Omdan dataene til langt format</span></span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a>long_data <span class="ot">&lt;-</span> ledigekon <span class="sc">%&gt;%</span></span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span><span class="st">`</span><span class="at">1</span><span class="st">`</span>,  <span class="co"># Bevar den første kolonne og omdan resten</span></span>
+<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Dato"</span>,</span>
+<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Value"</span></span>
+<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb63-18"><a href="#cb63-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb63-19"><a href="#cb63-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> <span class="st">`</span><span class="at">1</span><span class="st">`</span>,</span>
+<span id="cb63-20"><a href="#cb63-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> Value</span>
+<span id="cb63-21"><a href="#cb63-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb63-22"><a href="#cb63-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-23"><a href="#cb63-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Konverter 'Dato' til yearmonth format</span></span>
+<span id="cb63-24"><a href="#cb63-24" aria-hidden="true" tabindex="-1"></a>long_data <span class="ot">&lt;-</span> long_data <span class="sc">%&gt;%</span></span>
+<span id="cb63-25"><a href="#cb63-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb63-26"><a href="#cb63-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dato =</span> <span class="fu">sub</span>(<span class="st">"M"</span>, <span class="st">"-"</span>, Dato),  <span class="co"># Erstat 'M' med '-'</span></span>
+<span id="cb63-27"><a href="#cb63-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dato =</span> <span class="fu">ymd</span>(<span class="fu">paste0</span>(Dato, <span class="st">"-01"</span>)),  <span class="co"># Tilføj '-01' for at fuldende datoen</span></span>
+<span id="cb63-28"><a href="#cb63-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dato =</span> <span class="fu">yearmonth</span>(Dato)  <span class="co"># Konverter til yearmonth</span></span>
+<span id="cb63-29"><a href="#cb63-29" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb63-30"><a href="#cb63-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-31"><a href="#cb63-31" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(long_data, dataframe_dk, <span class="at">by =</span> <span class="st">"Dato"</span>)</span>
+<span id="cb63-32"><a href="#cb63-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-33"><a href="#cb63-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Fjern observationer inden 2010</span></span>
+<span id="cb63-34"><a href="#cb63-34" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
+<span id="cb63-35"><a href="#cb63-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Dato) <span class="sc">&gt;=</span> <span class="dv">2010</span>)</span>
+<span id="cb63-36"><a href="#cb63-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-37"><a href="#cb63-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-38"><a href="#cb63-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Konverter data til et tsibble objekt</span></span>
+<span id="cb63-39"><a href="#cb63-39" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">as_tsibble</span>(combined_data, <span class="at">index =</span> Dato)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Agregering af data med agregate_key()</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Omform data til langt format for at bruge aggregate_key</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>long_data <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(Mænd, Kvinder), <span class="at">names_to =</span> <span class="st">"Køn"</span>, <span class="at">values_to =</span> <span class="st">"Antal"</span>)</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregér dataene med aggregate_key</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>aggregated_data <span class="ot">&lt;-</span> long_data <span class="sc">|&gt;</span></span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aggregate_key</span>(Køn, <span class="at">Antal =</span> <span class="fu">sum</span>(Antal, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Se et udsnit af det aggregerede data</span></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(aggregated_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tsibble: 6 x 3 [1M]
+# Key:       Køn [1]
+      Dato Køn            Antal
+     &lt;mth&gt; &lt;chr*&gt;         &lt;dbl&gt;
+1 2010 jan &lt;aggregated&gt; 179411.
+2 2010 feb &lt;aggregated&gt; 184857 
+3 2010 mar &lt;aggregated&gt; 182319.
+4 2010 apr &lt;aggregated&gt; 162773.
+5 2010 maj &lt;aggregated&gt; 164430.
+6 2010 jun &lt;aggregated&gt; 158162.</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Brug filter og autoplot som ønsket</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>aggregated_data <span class="sc">|&gt;</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is_aggregated</span>(Køn)) <span class="sc">|&gt;</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(Antal) <span class="sc">+</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Antal ('000)"</span>,</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Antal ledige over tid fordelt på køn"</span>) <span class="sc">+</span></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(Køn), <span class="at">scales =</span> <span class="st">"free_y"</span>, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="MundtligForecasting_files/figure-html/Agregering-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Her ses den agregrede ledighed fordelt på køn.</p>
+<section id="hierakisk-tidsserie" class="level2">
+<h2 class="anchored" data-anchor-id="hierakisk-tidsserie">Hierakisk Tidsserie</h2>
+<p>På baggrund af de agregerede data defineres en ETS model. På baggrund af tidsvariablen og ledighed for mænd og kvinder, undersøges det om en bedre model kan defineres.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Definer start- og slutdatoer for testperioden</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>test_start_date <span class="ot">&lt;-</span> <span class="fu">yearmonth</span>(<span class="st">"2023 May"</span>)</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>test_end_date <span class="ot">&lt;-</span> <span class="fu">yearmonth</span>(<span class="st">"2024 Apr"</span>)</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Opdel data i trænings- og testdatasæt</span></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> aggregated_data <span class="sc">%&gt;%</span></span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Dato <span class="sc">&lt;</span> test_start_date)</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> aggregated_data <span class="sc">%&gt;%</span></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Dato <span class="sc">&gt;=</span> test_start_date <span class="sc">&amp;</span> Dato <span class="sc">&lt;=</span> test_end_date)</span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Modellér dataene med ETS</span></span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> train_data <span class="sc">|&gt;</span></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="at">base =</span> <span class="fu">ETS</span>(Antal)) <span class="sc">|&gt;</span></span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reconcile</span>(</span>
+<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">bu =</span> <span class="fu">bottom_up</span>(base),</span>
+<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">ols =</span> <span class="fu">min_trace</span>(base, <span class="at">method =</span> <span class="st">"ols"</span>),</span>
+<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">mint =</span> <span class="fu">min_trace</span>(base, <span class="at">method =</span> <span class="st">"mint_shrink"</span>)</span>
+<span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Print modellen for at se resultaterne</span></span>
+<span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A mable: 3 x 5
+# Key:     Køn [3]
+  Køn                   base bu            ols           mint         
+  &lt;chr*&gt;             &lt;model&gt; &lt;model&gt;       &lt;model&gt;       &lt;model&gt;      
+1 Kvinder       &lt;ETS(A,N,A)&gt; &lt;ETS(A,N,A)&gt;  &lt;ETS(A,N,A)&gt;  &lt;ETS(A,N,A)&gt; 
+2 Mænd         &lt;ETS(M,Ad,M)&gt; &lt;ETS(M,Ad,M)&gt; &lt;ETS(M,Ad,M)&gt; &lt;ETS(M,Ad,M)&gt;
+3 &lt;aggregated&gt;  &lt;ETS(A,N,A)&gt; &lt;ETS(A,N,A)&gt;  &lt;ETS(A,N,A)&gt;  &lt;ETS(A,N,A)&gt; </code></pre>
+</div>
+</div>
+<p>Her ses en oversigt over de modeller der er definerede for top niveauet, samt for mænd og kvinder.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lav forudsigelser for testperioden (maj 2023 til april 2024)</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>forecasts_test <span class="ot">&lt;-</span> fit <span class="sc">%&gt;%</span></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">new_data =</span> test_data)</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Beregn RMSE ved hjælp af accuracy()</span></span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>accuracy_measures_test <span class="ot">&lt;-</span> forecasts_test <span class="sc">%&gt;%</span></span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">accuracy</span>(test_data)</span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Udtræk og vis MAE, RMSE og MAPE værdierne</span></span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a>mae_rmse_mape_values_test <span class="ot">&lt;-</span> accuracy_measures_test <span class="sc">%&gt;%</span></span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(.model, Køn, MAE, RMSE, MAPE)</span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mae_rmse_mape_values_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 5
+   .model Køn            MAE  RMSE  MAPE
+   &lt;chr&gt;  &lt;chr*&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 base   Kvinder      2250. 2779.  5.42
+ 2 base   Mænd         1617. 1905.  3.87
+ 3 base   &lt;aggregated&gt; 3270. 4515.  3.94
+ 4 bu     Kvinder      2250. 2779.  5.42
+ 5 bu     Mænd         1617. 1905.  3.87
+ 6 bu     &lt;aggregated&gt; 2682. 3317.  3.22
+ 7 mint   Kvinder      2271. 2794.  5.47
+ 8 mint   Mænd         1811. 2154.  4.37
+ 9 mint   &lt;aggregated&gt; 2784. 3572.  3.34
+10 ols    Kvinder      2452. 2968.  5.86
+11 ols    Mænd         1927. 2309.  4.67
+12 ols    &lt;aggregated&gt; 3047. 4072.  3.67</code></pre>
+</div>
+</div>
+<p>Metrikker for de tre metoder vurderes her. Det ses her at metoden bu (bottoms up) har den bedste performance for den totale ledighed (&lt;agregated&gt;). Derfor vælges denne model til forecasting.</p>
+<p>Krydsvalidering</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Funktion til at udføre krydsvalidering på hierarkiske modeller</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>cross_validate_hierarchical <span class="ot">&lt;-</span> <span class="cf">function</span>(data, <span class="at">h =</span> <span class="dv">1</span>) {</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> aggregated_data <span class="sc">|&gt;</span></span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="sc">-</span><span class="fu">n</span>()) <span class="sc">|&gt;</span>  <span class="co"># Fjern den sidste observation for at teste modelpræcisionen</span></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stretch_tsibble</span>(<span class="at">.init =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span>  <span class="co"># Initialiser de første 20 datapunkter for modeltræning</span></span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">model</span>(</span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">base =</span> <span class="fu">ETS</span>(Antal)</span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reconcile</span>(</span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">bu =</span> <span class="fu">bottom_up</span>(base)</span>
+<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">forecast</span>(<span class="at">h =</span> h) <span class="sc">|&gt;</span>  <span class="co"># Laver en 1-step forudsigelse</span></span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">accuracy</span>(aggregated_data) <span class="sc">|&gt;</span>  <span class="co"># Beregner nøjagtighedsstatistikker baseret på faktiske data</span></span>
+<span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">"bu"</span>) <span class="sc">|&gt;</span>  <span class="co"># Filtrér kun for "bu" modellen</span></span>
+<span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(.model, Køn, RMSE, MAPE, MAE)  <span class="co"># Vælg relevante kolonner</span></span>
+<span id="cb71-16"><a href="#cb71-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(results)</span>
+<span id="cb71-17"><a href="#cb71-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb71-18"><a href="#cb71-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-19"><a href="#cb71-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Udfør krydsvalidering på hierarkiske modeller</span></span>
+<span id="cb71-20"><a href="#cb71-20" aria-hidden="true" tabindex="-1"></a>results_hierarchical <span class="ot">&lt;-</span> <span class="fu">cross_validate_hierarchical</span>(tsibble_data)</span>
+<span id="cb71-21"><a href="#cb71-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-22"><a href="#cb71-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Vis resultaterne</span></span>
+<span id="cb71-23"><a href="#cb71-23" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results_hierarchical)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 5
+  .model Køn           RMSE  MAPE   MAE
+  &lt;chr&gt;  &lt;chr*&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 bu     Kvinder      2785.  3.35 1836.
+2 bu     Mænd         2881.  3.09 1827.
+3 bu     &lt;aggregated&gt; 5389.  3.07 3477.</code></pre>
+</div>
+</div>
+<p>Forecasting med hierakisk tidsserie</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>best_model_name <span class="ot">&lt;-</span> <span class="st">"bu"</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Lav forudsigelser fra den sidste dato i datasættet med den bedste model</span></span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>last_date <span class="ot">&lt;-</span> <span class="fu">max</span>(aggregated_data<span class="sc">$</span>Dato)</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>future_dates <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Dato =</span> <span class="fu">yearmonth</span>(<span class="fu">seq.Date</span>(<span class="fu">as.Date</span>(last_date) <span class="sc">+</span> <span class="fu">months</span>(<span class="dv">1</span>), <span class="at">by =</span> <span class="st">"month"</span>, <span class="at">length.out =</span> <span class="dv">12</span>)),</span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>  Køn <span class="ot">=</span> <span class="fu">unique</span>(aggregated_data<span class="sc">$</span>Køn)</span>
+<span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tsibble</span>(<span class="at">index =</span> Dato, <span class="at">key =</span> Køn)</span>
+<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Lav forudsigelser med den bedste model</span></span>
+<span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a>forecasts_futurehieraki <span class="ot">&lt;-</span> fit <span class="sc">%&gt;%</span></span>
+<span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(best_model_name) <span class="sc">%&gt;%</span></span>
+<span id="cb73-14"><a href="#cb73-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">new_data =</span> future_dates)</span>
+<span id="cb73-15"><a href="#cb73-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-16"><a href="#cb73-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Konverter forecasts_futurehieraki til en tibble</span></span>
+<span id="cb73-17"><a href="#cb73-17" aria-hidden="true" tabindex="-1"></a>forecasts_futurehieraki_tibble <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(forecasts_futurehieraki)</span>
+<span id="cb73-18"><a href="#cb73-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-19"><a href="#cb73-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Lav en flot tabel med kableExtra</span></span>
+<span id="cb73-20"><a href="#cb73-20" aria-hidden="true" tabindex="-1"></a>forecasts_futurehieraki_tibble <span class="sc">%&gt;%</span></span>
+<span id="cb73-21"><a href="#cb73-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Køn, Dato, .mean) <span class="sc">%&gt;%</span></span>
+<span id="cb73-22"><a href="#cb73-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Køn</span><span class="st">`</span> <span class="ot">=</span> Køn, <span class="st">`</span><span class="at">Forecast Date</span><span class="st">`</span> <span class="ot">=</span> Dato, <span class="st">`</span><span class="at">Forecast Mean</span><span class="st">`</span> <span class="ot">=</span> .mean) <span class="sc">%&gt;%</span></span>
+<span id="cb73-23"><a href="#cb73-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"html"</span>, <span class="at">caption =</span> <span class="st">"Forecast Results for Future Hierarchical Data"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb73-24"><a href="#cb73-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>, <span class="st">"responsive"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<div class="table-responsive">
+<table class="table table-striped table-hover table-condensed table-sm small" data-quarto-postprocess="true">
+<caption>Forecast Results for Future Hierarchical Data</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Køn</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Forecast Date</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Forecast Mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Kvinder</td>
+<td style="text-align: left;">2024 maj</td>
+<td style="text-align: right;">45045.17</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kvinder</td>
+<td style="text-align: left;">2024 jun</td>
+<td style="text-align: right;">44758.12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kvinder</td>
+<td style="text-align: left;">2024 jul</td>
+<td style="text-align: right;">40753.09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kvinder</td>
+<td style="text-align: left;">2024 aug</td>
+<td style="text-align: right;">44485.54</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kvinder</td>
+<td style="text-align: left;">2024 sep</td>
+<td style="text-align: right;">43883.42</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kvinder</td>
+<td style="text-align: left;">2024 okt</td>
+<td style="text-align: right;">43835.64</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kvinder</td>
+<td style="text-align: left;">2024 nov</td>
+<td style="text-align: right;">44093.56</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kvinder</td>
+<td style="text-align: left;">2024 dec</td>
+<td style="text-align: right;">44268.36</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kvinder</td>
+<td style="text-align: left;">2025 jan</td>
+<td style="text-align: right;">47591.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kvinder</td>
+<td style="text-align: left;">2025 feb</td>
+<td style="text-align: right;">47372.07</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kvinder</td>
+<td style="text-align: left;">2025 mar</td>
+<td style="text-align: right;">45755.67</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kvinder</td>
+<td style="text-align: left;">2025 apr</td>
+<td style="text-align: right;">42548.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mænd</td>
+<td style="text-align: left;">2024 maj</td>
+<td style="text-align: right;">38710.42</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mænd</td>
+<td style="text-align: left;">2024 jun</td>
+<td style="text-align: right;">38068.01</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mænd</td>
+<td style="text-align: left;">2024 jul</td>
+<td style="text-align: right;">37295.34</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mænd</td>
+<td style="text-align: left;">2024 aug</td>
+<td style="text-align: right;">36672.03</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mænd</td>
+<td style="text-align: left;">2024 sep</td>
+<td style="text-align: right;">35833.13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mænd</td>
+<td style="text-align: left;">2024 okt</td>
+<td style="text-align: right;">37181.52</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mænd</td>
+<td style="text-align: left;">2024 nov</td>
+<td style="text-align: right;">38731.90</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mænd</td>
+<td style="text-align: left;">2024 dec</td>
+<td style="text-align: right;">41127.80</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mænd</td>
+<td style="text-align: left;">2025 jan</td>
+<td style="text-align: right;">47248.92</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mænd</td>
+<td style="text-align: left;">2025 feb</td>
+<td style="text-align: right;">46982.77</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mænd</td>
+<td style="text-align: left;">2025 mar</td>
+<td style="text-align: right;">45410.27</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mænd</td>
+<td style="text-align: left;">2025 apr</td>
+<td style="text-align: right;">42994.36</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&lt;aggregated&gt;</td>
+<td style="text-align: left;">2024 maj</td>
+<td style="text-align: right;">83755.59</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt;aggregated&gt;</td>
+<td style="text-align: left;">2024 jun</td>
+<td style="text-align: right;">82826.13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&lt;aggregated&gt;</td>
+<td style="text-align: left;">2024 jul</td>
+<td style="text-align: right;">78048.43</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt;aggregated&gt;</td>
+<td style="text-align: left;">2024 aug</td>
+<td style="text-align: right;">81157.57</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&lt;aggregated&gt;</td>
+<td style="text-align: left;">2024 sep</td>
+<td style="text-align: right;">79716.55</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt;aggregated&gt;</td>
+<td style="text-align: left;">2024 okt</td>
+<td style="text-align: right;">81017.16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&lt;aggregated&gt;</td>
+<td style="text-align: left;">2024 nov</td>
+<td style="text-align: right;">82825.47</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt;aggregated&gt;</td>
+<td style="text-align: left;">2024 dec</td>
+<td style="text-align: right;">85396.16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&lt;aggregated&gt;</td>
+<td style="text-align: left;">2025 jan</td>
+<td style="text-align: right;">94839.93</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt;aggregated&gt;</td>
+<td style="text-align: left;">2025 feb</td>
+<td style="text-align: right;">94354.84</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&lt;aggregated&gt;</td>
+<td style="text-align: left;">2025 mar</td>
+<td style="text-align: right;">91165.94</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt;aggregated&gt;</td>
+<td style="text-align: left;">2025 apr</td>
+<td style="text-align: right;">85542.86</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtrer for kun at vise de aggregerede resultater</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>aggregated_forecasts <span class="ot">&lt;-</span> forecasts_futurehieraki <span class="sc">%&gt;%</span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Køn <span class="sc">==</span> <span class="st">"&lt;aggregated&gt;"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="sammenligning-med-tidligere-model" class="level1">
+<h1>Sammenligning med tidligere model</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(best_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  .model          RMSE  MAPE   MAE
+  &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 SARIMA_111_101 4588.  2.44 2690.</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results_hierarchical)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 5
+  .model Køn           RMSE  MAPE   MAE
+  &lt;chr&gt;  &lt;chr*&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 bu     Kvinder      2785.  3.35 1836.
+2 bu     Mænd         2881.  3.09 1827.
+3 bu     &lt;aggregated&gt; 5389.  3.07 3477.</code></pre>
+</div>
+</div>
+<p><img src="images/clipboard-3940293951.png" class="img-fluid"></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>aggregated_forecasts <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Køn, <span class="sc">~</span>.model, <span class="sc">~</span>Dato, <span class="sc">~</span>Antal, <span class="sc">~</span>.mean,</span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;aggregated&gt;"</span>, <span class="st">"bu"</span>, <span class="st">"2024 maj"</span>, <span class="st">"N(83756, 9141573)"</span>, <span class="dv">83756</span>,</span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;aggregated&gt;"</span>, <span class="st">"bu"</span>, <span class="st">"2024 jun"</span>, <span class="st">"N(82826, 1.8e+07)"</span>, <span class="dv">82826</span>,</span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;aggregated&gt;"</span>, <span class="st">"bu"</span>, <span class="st">"2024 jul"</span>, <span class="st">"N(78048, 2.7e+07)"</span>, <span class="dv">78048</span>,</span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;aggregated&gt;"</span>, <span class="st">"bu"</span>, <span class="st">"2024 aug"</span>, <span class="st">"N(81158, 3.7e+07)"</span>, <span class="dv">81158</span>,</span>
+<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;aggregated&gt;"</span>, <span class="st">"bu"</span>, <span class="st">"2024 sep"</span>, <span class="st">"N(79717, 4.7e+07)"</span>, <span class="dv">79717</span>,</span>
+<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;aggregated&gt;"</span>, <span class="st">"bu"</span>, <span class="st">"2024 okt"</span>, <span class="st">"N(81017, 6e+07)"</span>, <span class="dv">81017</span>,</span>
+<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;aggregated&gt;"</span>, <span class="st">"bu"</span>, <span class="st">"2024 nov"</span>, <span class="st">"N(82825, 7.4e+07)"</span>, <span class="dv">82825</span>,</span>
+<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;aggregated&gt;"</span>, <span class="st">"bu"</span>, <span class="st">"2024 dec"</span>, <span class="st">"N(85396, 9.3e+07)"</span>, <span class="dv">85396</span>,</span>
+<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;aggregated&gt;"</span>, <span class="st">"bu"</span>, <span class="st">"2025 jan"</span>, <span class="st">"N(94840, 1.2e+08)"</span>, <span class="dv">94840</span>,</span>
+<span id="cb79-16"><a href="#cb79-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;aggregated&gt;"</span>, <span class="st">"bu"</span>, <span class="st">"2025 feb"</span>, <span class="st">"N(94355, 1.4e+08)"</span>, <span class="dv">94355</span>,</span>
+<span id="cb79-17"><a href="#cb79-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;aggregated&gt;"</span>, <span class="st">"bu"</span>, <span class="st">"2025 mar"</span>, <span class="st">"N(91166, 1.6e+08)"</span>, <span class="dv">91166</span>,</span>
+<span id="cb79-18"><a href="#cb79-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;aggregated&gt;"</span>, <span class="st">"bu"</span>, <span class="st">"2025 apr"</span>, <span class="st">"N(85543, 1.7e+08)"</span>, <span class="dv">85543</span></span>
+<span id="cb79-19"><a href="#cb79-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb79-20"><a href="#cb79-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-21"><a href="#cb79-21" aria-hidden="true" tabindex="-1"></a>forecast_result <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb79-22"><a href="#cb79-22" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>.model, <span class="sc">~</span>Dato, <span class="sc">~</span>Antal_ledige, <span class="sc">~</span>.mean,</span>
+<span id="cb79-23"><a href="#cb79-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SARIMA_111_110"</span>, <span class="st">"2024 maj"</span>, <span class="st">"N(84128, 1.6e+07)"</span>, <span class="dv">84128</span>,</span>
+<span id="cb79-24"><a href="#cb79-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SARIMA_111_110"</span>, <span class="st">"2024 jun"</span>, <span class="st">"N(85084, 5.6e+07)"</span>, <span class="dv">85084</span>,</span>
+<span id="cb79-25"><a href="#cb79-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SARIMA_111_110"</span>, <span class="st">"2024 jul"</span>, <span class="st">"N(88889, 1e+08)"</span>, <span class="dv">88889</span>,</span>
+<span id="cb79-26"><a href="#cb79-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SARIMA_111_110"</span>, <span class="st">"2024 aug"</span>, <span class="st">"N(89891, 1.6e+08)"</span>, <span class="dv">89891</span>,</span>
+<span id="cb79-27"><a href="#cb79-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SARIMA_111_110"</span>, <span class="st">"2024 sep"</span>, <span class="st">"N(84923, 2.1e+08)"</span>, <span class="dv">84923</span>,</span>
+<span id="cb79-28"><a href="#cb79-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SARIMA_111_110"</span>, <span class="st">"2024 okt"</span>, <span class="st">"N(84991, 2.6e+08)"</span>, <span class="dv">84991</span>,</span>
+<span id="cb79-29"><a href="#cb79-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SARIMA_111_110"</span>, <span class="st">"2024 nov"</span>, <span class="st">"N(86046, 3.1e+08)"</span>, <span class="dv">86046</span>,</span>
+<span id="cb79-30"><a href="#cb79-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SARIMA_111_110"</span>, <span class="st">"2024 dec"</span>, <span class="st">"N(83997, 3.6e+08)"</span>, <span class="dv">83997</span>,</span>
+<span id="cb79-31"><a href="#cb79-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SARIMA_111_110"</span>, <span class="st">"2025 jan"</span>, <span class="st">"N(100721, 4.1e+08)"</span>, <span class="dv">100721</span>,</span>
+<span id="cb79-32"><a href="#cb79-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SARIMA_111_110"</span>, <span class="st">"2025 feb"</span>, <span class="st">"N(101226, 4.6e+08)"</span>, <span class="dv">101226</span>,</span>
+<span id="cb79-33"><a href="#cb79-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SARIMA_111_110"</span>, <span class="st">"2025 mar"</span>, <span class="st">"N(97659, 5.2e+08)"</span>, <span class="dv">97659</span>,</span>
+<span id="cb79-34"><a href="#cb79-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SARIMA_111_110"</span>, <span class="st">"2025 apr"</span>, <span class="st">"N(93816, 5.7e+08)"</span>, <span class="dv">93816</span></span>
+<span id="cb79-35"><a href="#cb79-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb79-36"><a href="#cb79-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-37"><a href="#cb79-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Samle .mean værdierne i en ny tabel</span></span>
+<span id="cb79-38"><a href="#cb79-38" aria-hidden="true" tabindex="-1"></a>combined_means <span class="ot">&lt;-</span> aggregated_forecasts <span class="sc">%&gt;%</span></span>
+<span id="cb79-39"><a href="#cb79-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Dato, <span class="st">`</span><span class="at">Hierakisk Tidsserie</span><span class="st">`</span> <span class="ot">=</span> .mean) <span class="sc">%&gt;%</span></span>
+<span id="cb79-40"><a href="#cb79-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb79-41"><a href="#cb79-41" aria-hidden="true" tabindex="-1"></a>    forecast_result <span class="sc">%&gt;%</span></span>
+<span id="cb79-42"><a href="#cb79-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(Dato, <span class="at">SARIMA =</span> .mean),</span>
+<span id="cb79-43"><a href="#cb79-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"Dato"</span></span>
+<span id="cb79-44"><a href="#cb79-44" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb79-45"><a href="#cb79-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-46"><a href="#cb79-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Vis de kombinerede data som en pæn tabel</span></span>
+<span id="cb79-47"><a href="#cb79-47" aria-hidden="true" tabindex="-1"></a>combined_means <span class="sc">%&gt;%</span></span>
+<span id="cb79-48"><a href="#cb79-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Sammenligning af .mean værdier for Aggregated og SARIMA modeller"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb79-49"><a href="#cb79-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<table class="table table-striped table-hover table-condensed table-sm small" data-quarto-postprocess="true">
+<caption>Sammenligning af .mean værdier for Aggregated og SARIMA modeller</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Dato</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Hierakisk Tidsserie</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SARIMA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2024 maj</td>
+<td style="text-align: right;">83756</td>
+<td style="text-align: right;">84128</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2024 jun</td>
+<td style="text-align: right;">82826</td>
+<td style="text-align: right;">85084</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2024 jul</td>
+<td style="text-align: right;">78048</td>
+<td style="text-align: right;">88889</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2024 aug</td>
+<td style="text-align: right;">81158</td>
+<td style="text-align: right;">89891</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2024 sep</td>
+<td style="text-align: right;">79717</td>
+<td style="text-align: right;">84923</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2024 okt</td>
+<td style="text-align: right;">81017</td>
+<td style="text-align: right;">84991</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2024 nov</td>
+<td style="text-align: right;">82825</td>
+<td style="text-align: right;">86046</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2024 dec</td>
+<td style="text-align: right;">85396</td>
+<td style="text-align: right;">83997</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2025 jan</td>
+<td style="text-align: right;">94840</td>
+<td style="text-align: right;">100721</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2025 feb</td>
+<td style="text-align: right;">94355</td>
+<td style="text-align: right;">101226</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2025 mar</td>
+<td style="text-align: right;">91166</td>
+<td style="text-align: right;">97659</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2025 apr</td>
+<td style="text-align: right;">85543</td>
+<td style="text-align: right;">93816</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Baseret på metrikkerne vurderes det at ledighed fordelt på mænd og kvinder ikke har forbedret forudsigelsen af den totale ledighed. Samtidig vurderes det at SARIMAs forudsigelse ligger 40 personer fra den faktiske forudsigelse, hvilket kan indikere en bedre præcision.</p>
+</section>
+<section id="anbefalinger" class="level1">
+<h1>Anbefalinger</h1>
+<p>Håndtering af Outliers</p>
+<ul>
+<li>Det anbefales at outliers håndteres. Man kan evt. lave en boxcox eller log transformering, for at forbedre håndtering af outliers. Det kan også overvejes at bruge modeller der er særlige robuste overfor outliers som f.eks Robust ARIMA. Man kan også vælge en SARIMAX og inkludere dummyvariabler som f.eks COVID-19.</li>
+</ul>
+<p>Relevante variabler</p>
+<ul>
+<li>Man kan overveje at tilføje flere eller andre variabler, der kan have indflydelse på Ledighedstallet. Økonomiske variabler som indflation eller høj- og lavkonjuktur kunne overvejes.</li>
+</ul>
+<p>Yderligere niveauer</p>
+<ul>
+<li>Tilføje flere niveaer. Ledighed fordelt på regioner eller demografi kunne overvejes.</li>
+</ul>
+</section>
+<section id="konklussion" class="level1">
+<h1>Konklussion</h1>
+<p>Det vurderes at den hierakiske tidsserie ikke har forbedret præcisionen af forudsigelsen. SARIMA har overordnet bedre RMSE, MAE og MAPE hvilet indikerer en højere præcision.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
