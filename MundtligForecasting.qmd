@@ -1,0 +1,744 @@
+---
+title: "Mundtlig forecasting"
+description: ""
+date: 06/25/24
+published-title: Afleveres d. 
+author:
+  - name: Mette-Louiise Marie Jonassen
+    affiliation: Erhvervsakademi Dania
+title-block-banner: true 
+format: html
+editor: visual
+warning: false
+output: true
+code-fold: true
+toc: true
+toc-depth: 3
+---
+
+# Indlæsning af pakker
+
+```{r indlæsning af pakker}
+set.seed(2510)
+
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+# Konsolideret pakkeindlæsning med pacman
+pacman::p_load(
+  "cluster", "class", "ggplot2", "tidyverse", "tibble", "openxlsx", "glmnet", "factoextra", 
+  "caret", "randomForest", "lubridate", "pROC", "readxl", "gbm", "reshape2", "dplyr", "writexl", 
+  "gghighlight", "hrbrthemes", "tsibble", "feasts", "fable", "tsibbledata", "forecast", 
+  "fpp", "fpp2", "fpp3", "fabletools", "knitr", "ggpubr", "gridExtra", "GGally", "slider", 
+  "car", "shiny", "glue", "broom", "kableExtra", "gt", "seasonal", "latex2exp", "ggfortify", 
+  "urca", "tseries", "janitor", "hts", "zoo", "timetk", "plotly"
+)
+```
+
+# Indlæs data
+
+Vi starter med at indlæse data, samt at konvertere datasættet til en tibble
+
+```{r indlæs data}
+dataframe_dk <- read_excel("Ledige.xlsx")
+
+dataframe_dk <- dataframe_dk %>%
+  mutate(Dato = yearmonth(Dato))
+
+# Konverter data til en tsibble
+tsibble_data <- dataframe_dk%>%
+  as_tsibble(index = Dato)
+```
+
+# Visualisering
+
+Datasættet bliver visualiseret, for at få en ide om hvordan det ser ud.
+
+```{r visualisering}
+# Omdan data til et format der kan bruges af plotly
+ts_data <- tsibble_data %>%
+  as_tibble() %>%
+  rename(Tid = Dato, Værdi = Antal_ledige)
+
+# Konverter 'Tid' kolonnen til Date format
+ts_data <- ts_data %>%
+  mutate(Tid = as.Date(Tid))
+
+
+# Lav et interaktivt plotly plot
+plot_ly(ts_data, x = ~Tid, y = ~Værdi, type = 'scatter', mode = 'lines') %>%
+  layout(title = 'Interaktiv Tidsserie Plot',
+         xaxis = list(title = 'Tid', tickformat = "%Y-%m", tickmode = "auto", nticks = 20),
+         yaxis = list(title = 'Antal Ledige'))
+
+
+# Visualiser data med gg_season
+tsibble_data %>%
+  gg_season(Antal_ledige, labels = "both") +
+  labs(y = "Antal ledige",
+       title = "Sæsonplot: Arbejdsløshedstal i Danmark") +
+  theme_minimal()
+```
+
+# STL og spikiness/største sæsonudsving
+
+Nu undersøges datasættet for spikiness, for at finde ud af hvor stabilt datasættet er, samt at finde det største udsving. Dette gøres for at få en ide om hvilke modeller der kan være passende at anvende. Der anvendes også en STL dekomposition, for at undersøge datasættet for trend og sæson, ligeledes for at vurdere hvilke modeller der kan være passende.
+
+```{r STL}
+
+fit <- tsibble_data %>%
+  model(stl = STL(Antal_ledige ~ season(window = "periodic")))
+
+# Beregn komponenter af STL-dekomposition
+decomp <- components(fit)
+
+# Plot STL-dekompositionen
+autoplot(decomp)
+
+
+# Identificer den måned med det største sæsonudsving
+seasonal_peak <- decomp %>%
+  as_tibble() %>%
+  filter(season_adjust == max(season_adjust, na.rm = TRUE)) %>%
+  select(Dato, season_adjust)
+
+# Print resultatet
+print(seasonal_peak)
+
+
+# Beregn spikiness
+remainder <- decomp$remainder
+
+# Funktion til at beregne spikiness
+calculate_spikiness <- function(remainder) {
+  n <- length(remainder)
+  leave_one_out_var <- sapply(1:n, function(i) var(remainder[-i]))
+  spikiness <- var(leave_one_out_var)
+  return(spikiness)
+}
+
+spikiness_value <- calculate_spikiness(remainder)
+
+# Print spikiness
+print(paste("Spikiness:", spikiness_value))
+
+
+
+tsibble_data <- tsibble_data %>%
+  filter(year(Dato) >= 2010)
+```
+
+Det konstateres at datasættet med stor sandynlighed har sæson. Der kan ligeledes anes en trend indtil 2020, hvor COVID-19 havde sin indflydelse. COVID-19 betragtes som en outlier. Det samme gælder for året 2009, hvor der var finanskrise. Derfor sorteres observationer før 2010 fra. Det vurderes at trenden efter 2020 ikke er den samme som inden, og derfor beholdes obsevationer efter COVID-19
+
+# Manuel (S)ARIMA
+
+Her vurderes det hvilke ARIMA og SARIMA modeller der bør tages betragtning til at forecaste Ledighed.
+
+## Test om data er stationær
+
+Før udføres en ADF test, for at vurdere om datasættet er stationært.
+
+```{r ADF}
+# Antag at original_ts er din tidsserie for de originale data
+original_ts <- ts(tsibble_data$Antal_ledige, frequency = 12, start = c(2010, 1))
+
+# Udfør ADF-testen på de originale data
+adf_test_original <- ur.df(original_ts, type = "drift", selectlags = "AIC")
+
+# Udtræk nødvendige værdier fra ADF-testen
+adf_summary_original <- summary(adf_test_original)
+test_statistic_original <- adf_summary_original@testreg$coefficients[2, 3]
+critical_values_original <- adf_summary_original@cval
+
+# Print resultaterne for de originale data
+cat("ADF Test Resultater for Originale Data:\n")
+cat("Test-statistik:", test_statistic_original, "\n")
+cat("Kritiske værdier:\n")
+cat("1% niveau:", critical_values_original["tau2", "1pct"], "\n")
+cat("5% niveau:", critical_values_original["tau2", "5pct"], "\n")
+cat("10% niveau:", critical_values_original["tau2", "10pct"], "\n")
+
+# Evaluér om de originale data er stationære
+if (test_statistic_original < critical_values_original["tau2", "5pct"]) {
+  cat("Konklusion: De originale data er stationære.\n")
+} else {
+  cat("Konklusion: De originale data er ikke stationære.\n")
+}
+
+```
+
+Efter udførelse af ADF testen, vurderes det, at datasættet ikke er stationært, da Test-statistikken er større end alle tre niveauer.
+
+## Sæsondifferenciering og test om data er stationære
+
+Da datasættet ikke er stationært og det vurderes at der er stærk sæson i datasættet, udføres sæson differencieres der. Derefter kører ADF testen igen, for at tjekke om datasættet derefter er stationært.
+
+```{r Sæsondifferenciering}
+
+# Anvend sæsondifferenciering på tidsserien
+tsibble_data <- tsibble_data %>%
+  mutate(Seasonal_Diff = difference(Antal_ledige, lag = 12))
+
+
+# Konverter sæsondifferencierede data til en tidsserie objekt
+seasonal_diff<- ts(tsibble_data$Seasonal_Diff, frequency = 12, start = c(2009, 1))
+
+# Fjern NA-værdier før ADF-test
+seasonal_diff <- na.omit(seasonal_diff)
+
+# Udfør ADF-test på de sæsondifferencierede Box-Cox transformerede data
+adf_test_seasonal_diff <- ur.df(seasonal_diff, type = "drift", selectlags = "AIC")
+
+# Udtræk nødvendige værdier
+adf_summary <- summary(adf_test_seasonal_diff)
+test_statistic <- adf_summary@testreg$coefficients[2, 3]
+critical_values <- adf_summary@cval
+
+
+# Print resultaterne
+cat("ADF Test Resultater:\n")
+cat("Test-statistik:", test_statistic, "\n")
+cat("Kritiske værdier:\n")
+cat("1% niveau:", critical_values["tau2", "1pct"], "\n")
+cat("5% niveau:", critical_values["tau2", "5pct"], "\n")
+cat("10% niveau:", critical_values["tau2", "10pct"], "\n")
+
+# Evaluér om data er stationære
+if (test_statistic < critical_values["tau2", "5pct"]) {
+  cat("Konklusion: Dataene er stationære.\n")
+} else {
+  cat("Konklusion: Dataene er ikke stationære.\n")
+}
+
+```
+
+Da Test-statistikken er mindre end alle tre nivauer afvises nul hypotesen og det vurderes at datasættet er stationært.
+
+## ACF Plot - Valg af modeller
+
+ACF og PACF plot visualiseres, for at vurdere hvilke modeller der kan være passende til forecasting af datasætte.
+
+```{r ACF og PACF}
+
+tsibble_data_clean <- tsibble_data %>% 
+  filter(!is.na(Seasonal_Diff))
+
+layout(matrix(1:2, nrow = 1))
+# Plot ACF
+acf_plot <- Acf(tsibble_data_clean$Seasonal_Diff, main="ACF for Differenced Series", lag.max = 48)
+
+# Plot PACF
+pacf_plot <- Pacf(tsibble_data_clean$Seasonal_Diff, main="PACF for Differenced Series", lag.max = 48)
+
+```
+
+ACF
+
+En tydelig spike ved lag 12 indikerer at sæsoncycle er på 12 måneder og dermed årlig.
+
+-   Viser en langsom aftagende sæsonmæssig korrelation, som tyder på en stærk sæsonkomponent i dataene.
+
+-   Den langsomme aftagning efter det første lag kan indikere behovet for yderligere differenciering eller en model med en sæsonkomponent.
+
+-   Den høje autokorrelation ved lag 1 indikerer, at en MA(1) model kan være passende. Da der er signifikante korrelationer efter lag 1, kan det også være nyttigt at prøve en højere ordre MA-model, som f.eks. MA(2).
+
+PACF
+
+-   En skarp cut-off efter lag 1 og 2 og enkelte spikes ved sæsonlags, hvilket kunne indikere en AR(1) model.
+
+Dette leder os til følgende modeller at arbejde videre med:
+
+ACF plottet har make signifikante spikes, og indkiationer for aftagende korelation over tid. Det kan betyde at der er sæson i data. Derfor vælges SARIMA modeller.
+
+### Manuel SARIMA
+
+Følgende modeller vælges:
+
+SARIMA(1,1,1), (1, 1, 0)(12)
+
+SARIMA(1,1,1), (1, 1, 1)(12)
+
+SARIMA(2,1,1), (1, 1, 0)(12)
+
+SARIMA(2,1,1), (1, 1, 1)(12)
+
+## Auto ARIMA
+
+```{r AutoArima}
+#| cache: true
+#| output: true
+
+#autoarima
+# Konverter data til en tsibble
+tsibble_data_original <- dataframe_dk %>%
+  mutate(Dato = yearmonth(Dato)) %>%
+  as_tsibble(index = Dato)
+
+# Filtrer data til de relevante perioder
+tsibble_data_original <- tsibble_data_original %>%
+  filter(year(Dato) >= 2010)
+
+# Konverter dataene til et tidsserie objekt
+original_ts <- ts(tsibble_data_original$Antal_ledige, frequency = 12, start = c(2010, 1))
+
+# Kør auto.arima for at finde den bedste ARIMA model
+best_arima_model <- auto.arima(original_ts, 
+                               seasonal = TRUE, 
+                               stepwise = FALSE, 
+                               approximation = FALSE)
+
+
+# Udskriv opsummeringen af den bedste model fundet af auto.arima
+summary(best_arima_model)
+checkresiduals(best_arima_model)
+
+#Series: original_ts 
+#ARIMA(2,0,2)(1,1,0)[12] 
+
+```
+
+Auto ARIMA har defineret følgende model:
+
+#ARIMA(2,0,2)(1,1,0)\[12\]
+
+# ETS model
+
+I det følgende defineres en ETS model. Exponential Smoothing modeller er særligt godt til at håndtere outliers og håndtere sæson og trendelementer.
+
+```{r ETS}
+
+dataframe_dk <- dataframe_dk %>%
+  mutate(Dato = yearmonth(Dato))
+
+# Konverter data til en tsibble
+tsibble_data_ets <- dataframe_dk%>%
+  as_tsibble(index = Dato)
+
+
+tsibble_data_ets <- tsibble_data_ets %>%
+  filter(year(Dato) >= 2010)
+
+
+# Tilpas ETS modellen
+fit_ets <- tsibble_data_ets |>
+  model(ETS(Antal_ledige))
+
+
+# Rapportér den valgte model
+report(fit_ets)
+
+components(fit_ets) |>
+  autoplot() +
+  labs(title = "ETS(M,N,M) komponenter")
+```
+
+ETS koden har defineret at den bedste model til dette datasæt er ETS(M,N,M).
+
+-   **Error (Fejl) - Multiplikativ (M):**
+
+    -   **Multiplikativ fejl:** I denne model multipliceres fejlkomponenten med de øvrige komponenter. Dette betyder, at variabiliteten af dataene afhænger af niveauet af tidsserien.
+
+    -   Dette betyder, at fejlene skalerer med niveauet af tidsserien.
+
+-   **Trend - Ingen trend (N):**
+
+    -   **Ingen trend:** Der er ingen underliggende trendkomponent i modellen. Dette betyder, at niveauet af tidsserien forbliver konstant over tid, når der ikke tages højde for sæsonvariationer og fejl.
+
+-   **Seasonal (Sæson) - Multiplikativ (M):**
+
+    -   **Multiplikativ sæson:** Sæsonkomponenten multipliceres med niveaukomponenten, hvilket betyder, at sæsonudsvingene varierer proportionalt med niveauet af tidsserien.
+
+En ETS(M,N,M)-model antager, at dataene har en multiplikativ fejlstruktur og en multiplikativ sæsonkomponent, men ingen underliggende trend. Dette betyder, at modellen er velegnet til tidsserier, hvor sæsonvariationerne varierer proportionalt med niveauet af serien, og hvor der ikke er nogen langsigtet trend.
+
+# Evaluering
+
+Modellerne krydsvalideres for at vurdere modellens performance. Der vurderes på følgende metrikker: RMSE, MAE og MAPE.
+
+```{r Krydsvalidering}
+#| cache: true
+
+results <- tsibble_data |> 
+  slice(-n()) |>  # Fjerner den sidste observation for at teste modelpræcisionen
+  stretch_tsibble(.init = 20) |>  # Initialiserer de første 20 datapunkter for modeltræning
+  model(
+     SARIMA_111_101 = ARIMA(Antal_ledige ~ pdq(1, 1, 1) + PDQ(1, 1, 0, period = 12)),
+    SARIMA_111_111 = ARIMA(Antal_ledige ~ pdq(1, 1, 1) + PDQ(1, 1, 1, period = 12)),
+    SARIMA_211_110 = ARIMA(Antal_ledige ~ pdq(2, 1, 1) + PDQ(1, 1, 0, period = 12)),
+    SARIMA_211_111 = ARIMA(Antal_ledige ~ pdq(2, 1, 1) + PDQ(1, 1, 1, period = 12)),
+    AutoSARIMA_202_110 = ARIMA(Antal_ledige ~ pdq(2, 0, 2) + PDQ(1, 1, 0, period = 12)),
+    ETS(Antal_ledige)
+  ) |> 
+  forecast(h = 1) |>  # Laver en 1-step forudsigelse
+  accuracy(tsibble_data) |>  # Beregner nøjagtighedsstatistikker baseret på faktiske data
+  select(.model, RMSE, MAPE, MAE)  # Vælger kun modellens navn, RMSE og MAPE for visning
+
+# Vis resultaterne
+print(results)
+
+# Konverter til en pæn tabel
+results %>%
+  kable("html", caption = "Model Performance Metrics") %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+
+```
+
+Det ses her at de modeller der perfomerbedst er
+
+SARIMA_111_101 og AutoSARIMA_202_110
+
+De to bedste modeller udvælges og reidualerne samt ljungbox test udføres for at vurdere hvilken model der er mest passende.
+
+```{r modelvalg}
+
+best_model1 <- results %>%
+  arrange(RMSE) %>%
+  slice(1:1)
+
+# Vis de bedste modeller
+print(best_model1)
+
+ts_data <- ts(tsibble_data$Antal_ledige, frequency = 12)
+best_model <- Arima(ts_data, order=c(1,1,1), seasonal=list(order=c(1,1,0), period=12))
+nextbest_model <- Arima(ts_data, order=c(2,0,2), seasonal=list(order=c(1,1,0), period=12))
+
+
+# Tjek residualerne
+checkresiduals(best_model)
+checkresiduals(nextbest_model)
+```
+
+**Best_model**
+
+-   **Tidsserie plot af residualer:** Der er en tydelig spike omkring lag 10, hvilket kan indikere en outlier eller en fejl i modellen. Ellers ser residualerne ud til at være tilfældigt fordelt omkring nul.
+
+-   **ACF plot af residualer:** Der er nogle signifikante spikes, især ved lavere lags (f.eks. lag 1), hvilket kan indikere, at der er autokorrelation tilbage i residualerne, som modellen ikke har fanget.
+
+-   **Histogram af residualer:** Histogrammet viser, at residualerne ikke er perfekt normalfordelte. Der er en vis skævhed og outliers, som kan ses i halerne af fordelingen.
+
+-   Ljungbox testen viser en værdi på 0,049 hvilket ligger marginalt tæt på 0,05
+
+**Nextbest_Model**
+
+-   **Tidsserie plot af residualer:** Den store spike omkring lag 10 bør undersøges nærmere, da det kan være en outlier eller en problematisk observation.
+
+-   **ACF plot af residualer:** De få signifikante spikes indikerer, at der stadig er autokorrelation tilbage i residualerne. Dette kan betyde, at modellen kan forbedres yderligere.
+
+-   **Histogram af residualer:** Residualerne er ikke perfekt normalfordelte og viser en vis skævhed. Dette kan indikere, at modellen ikke fuldstændigt fanger dataenes struktur.
+
+-   Ljungboxtesten viser en p-værdi på 0,0397 hvilket bør ligge over 0,05 hvilke betyder at nulhyptosen ikke kan afvises.
+
+På baggrund af disse observationer udvælges best_model: SARIMA_111_101
+
+# Forecasting
+
+I det følgende afsnit forecastes de efterfølgende 12 måneder.
+
+```{r Forecasting}
+best_model <- tsibble_data %>% 
+  model(
+    SARIMA_111_110 = ARIMA(Antal_ledige ~ pdq(1, 1, 1) + PDQ(1, 1, 0, period = 12))
+  )
+
+#Tjek residualer
+best_model |> gg_tsresiduals(lag=48)
+
+augmented_fit <- augment(best_model)
+
+augment(best_model) |>
+  filter(.model == "SARIMA_111_110") |>
+  features(.innov, ljung_box, lag=24, dof=3)
+
+best_model %>% 
+  forecast(h=12) %>% 
+  autoplot(tsibble_data) +
+  labs(title = "Ledighedstal",
+       y="Ledige")
+
+forecast_result <- best_model %>% forecast(h = 12)
+
+# Konverter forecast_result til en tibble
+forecast_result_tibble <- as_tibble(forecast_result)
+
+# Lav en flot tabel med kableExtra
+forecast_result_tibble %>%
+  select(Dato, .mean) %>%
+  rename(`Forecast Date` = Dato, `Forecast Mean` = .mean) %>%
+  kable("html", caption = "Forecast Results") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+
+
+autoplot(forecast_result) +
+  labs(title = "Forecast af ledighedstal i Danmark",
+       y = "Antal personer")
+```
+
+# Ny løsning - Forecasting af Hierachial Timeseries
+
+For at forsøge at forbedre modellen indhentes yderligere data. I det følgende afsnit udføres der forecasting af hierakiske datasæt. Det øverste niveau er Det totale antal ledige. Der tilføjes yderligere e niveau, nemlig ledighed fordel på mænd og kvinder.
+
+Data indlæses og renses og derefter kombineres datasættet med ledighed fordelt på mænd og kvinder
+
+```{r Ny løsning indlæs data}
+# Læs data fra Excel-ark
+file_path <- "Ledigekøn.xlsx"  # Udskift med den faktiske sti til din fil
+ledigekon <- read_excel(file_path)  # Tilpas hvis nødvendigt
+
+# Rens kolonnenavne
+ledigekon <- ledigekon %>%
+  clean_names()
+
+colnames(ledigekon) <- gsub("^x", "", colnames(ledigekon))
+
+# Omdan dataene til langt format
+long_data <- ledigekon %>%
+  pivot_longer(
+    cols = -`1`,  # Bevar den første kolonne og omdan resten
+    names_to = "Dato",
+    values_to = "Value"
+  ) %>%
+  pivot_wider(
+    names_from = `1`,
+    values_from = Value
+  )
+
+# Konverter 'Dato' til yearmonth format
+long_data <- long_data %>%
+  mutate(
+    Dato = sub("M", "-", Dato),  # Erstat 'M' med '-'
+    Dato = ymd(paste0(Dato, "-01")),  # Tilføj '-01' for at fuldende datoen
+    Dato = yearmonth(Dato)  # Konverter til yearmonth
+  )
+
+combined_data <- left_join(long_data, dataframe_dk, by = "Dato")
+
+# Fjern observationer inden 2010
+combined_data <- combined_data %>%
+  filter(year(Dato) >= 2010)
+
+
+# Konverter data til et tsibble objekt
+combined_data <- as_tsibble(combined_data, index = Dato)
+
+```
+
+Agregering af data med agregate_key()
+
+```{r Agregering}
+
+# Omform data til langt format for at bruge aggregate_key
+long_data <- combined_data %>%
+  pivot_longer(cols = c(Mænd, Kvinder), names_to = "Køn", values_to = "Antal")
+
+# Aggregér dataene med aggregate_key
+aggregated_data <- long_data |>
+  aggregate_key(Køn, Antal = sum(Antal, na.rm = TRUE))
+
+# Se et udsnit af det aggregerede data
+print(head(aggregated_data))
+
+# Brug filter og autoplot som ønsket
+aggregated_data |>
+  filter(!is_aggregated(Køn)) |>
+  autoplot(Antal) +
+  labs(y = "Antal ('000)",
+       title = "Antal ledige over tid fordelt på køn") +
+  facet_wrap(vars(Køn), scales = "free_y", ncol = 1) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+Her ses den agregrede ledighed fordelt på køn.
+
+## Hierakisk Tidsserie
+
+På baggrund af de agregerede data defineres en ETS model. På baggrund af tidsvariablen og ledighed for mænd og kvinder, undersøges det om en bedre model kan defineres.
+
+```{r Ny løsning ETS}
+# Definer start- og slutdatoer for testperioden
+test_start_date <- yearmonth("2023 May")
+test_end_date <- yearmonth("2024 Apr")
+
+# Opdel data i trænings- og testdatasæt
+train_data <- aggregated_data %>%
+  filter(Dato < test_start_date)
+
+test_data <- aggregated_data %>%
+  filter(Dato >= test_start_date & Dato <= test_end_date)
+
+# Modellér dataene med ETS
+fit <- train_data |>
+  model(base = ETS(Antal)) |>
+  reconcile(
+    bu = bottom_up(base),
+    ols = min_trace(base, method = "ols"),
+    mint = min_trace(base, method = "mint_shrink")
+  )
+
+# Print modellen for at se resultaterne
+print(fit)
+```
+
+Her ses en oversigt over de modeller der er definerede for top niveauet, samt for mænd og kvinder.
+
+```{r niveauer}
+# Lav forudsigelser for testperioden (maj 2023 til april 2024)
+forecasts_test <- fit %>%
+  forecast(new_data = test_data)
+
+# Beregn RMSE ved hjælp af accuracy()
+accuracy_measures_test <- forecasts_test %>%
+  accuracy(test_data)
+
+# Udtræk og vis MAE, RMSE og MAPE værdierne
+mae_rmse_mape_values_test <- accuracy_measures_test %>%
+  select(.model, Køn, MAE, RMSE, MAPE)
+
+print(mae_rmse_mape_values_test)
+```
+
+Metrikker for de tre metoder vurderes her. Det ses her at metoden bu (bottoms up) har den bedste performance for den totale ledighed (\<agregated\>). Derfor vælges denne model til forecasting.
+
+Krydsvalidering
+
+```{r Ny løsning krydsvalidering}
+#| cache: true
+# Funktion til at udføre krydsvalidering på hierarkiske modeller
+cross_validate_hierarchical <- function(data, h = 1) {
+  results <- aggregated_data |>
+    slice(-n()) |>  # Fjern den sidste observation for at teste modelpræcisionen
+    stretch_tsibble(.init = 20) |>  # Initialiser de første 20 datapunkter for modeltræning
+    model(
+      base = ETS(Antal)
+    ) |>
+    reconcile(
+      bu = bottom_up(base)
+    ) |>
+    forecast(h = h) |>  # Laver en 1-step forudsigelse
+    accuracy(aggregated_data) |>  # Beregner nøjagtighedsstatistikker baseret på faktiske data
+    filter(.model == "bu") |>  # Filtrér kun for "bu" modellen
+    select(.model, Køn, RMSE, MAPE, MAE)  # Vælg relevante kolonner
+  return(results)
+}
+
+# Udfør krydsvalidering på hierarkiske modeller
+results_hierarchical <- cross_validate_hierarchical(tsibble_data)
+
+# Vis resultaterne
+print(results_hierarchical)
+```
+
+Forecasting med hierakisk tidsserie
+
+```{r Ny løsning Forecasting}
+best_model_name <- "bu"
+
+# Lav forudsigelser fra den sidste dato i datasættet med den bedste model
+last_date <- max(aggregated_data$Dato)
+future_dates <- expand_grid(
+  Dato = yearmonth(seq.Date(as.Date(last_date) + months(1), by = "month", length.out = 12)),
+  Køn = unique(aggregated_data$Køn)
+) %>%
+  as_tsibble(index = Dato, key = Køn)
+
+# Lav forudsigelser med den bedste model
+forecasts_futurehieraki <- fit %>%
+  select(best_model_name) %>%
+  forecast(new_data = future_dates)
+
+# Konverter forecasts_futurehieraki til en tibble
+forecasts_futurehieraki_tibble <- as_tibble(forecasts_futurehieraki)
+
+# Lav en flot tabel med kableExtra
+forecasts_futurehieraki_tibble %>%
+  select(Køn, Dato, .mean) %>%
+  rename(`Køn` = Køn, `Forecast Date` = Dato, `Forecast Mean` = .mean) %>%
+  kable("html", caption = "Forecast Results for Future Hierarchical Data") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+
+
+
+# Filtrer for kun at vise de aggregerede resultater
+aggregated_forecasts <- forecasts_futurehieraki %>%
+  filter(Køn == "<aggregated>")
+```
+
+# Sammenligning med tidligere model
+
+```{r Sammenligning}
+print(best_model1)
+
+print(results_hierarchical)
+```
+
+![](images/clipboard-3940293951.png)
+
+```{r Forecast resultater}
+
+library(dplyr)
+library(knitr)
+library(kableExtra)
+
+aggregated_forecasts <- tribble(
+  ~Køn, ~.model, ~Dato, ~Antal, ~.mean,
+  "<aggregated>", "bu", "2024 maj", "N(83756, 9141573)", 83756,
+  "<aggregated>", "bu", "2024 jun", "N(82826, 1.8e+07)", 82826,
+  "<aggregated>", "bu", "2024 jul", "N(78048, 2.7e+07)", 78048,
+  "<aggregated>", "bu", "2024 aug", "N(81158, 3.7e+07)", 81158,
+  "<aggregated>", "bu", "2024 sep", "N(79717, 4.7e+07)", 79717,
+  "<aggregated>", "bu", "2024 okt", "N(81017, 6e+07)", 81017,
+  "<aggregated>", "bu", "2024 nov", "N(82825, 7.4e+07)", 82825,
+  "<aggregated>", "bu", "2024 dec", "N(85396, 9.3e+07)", 85396,
+  "<aggregated>", "bu", "2025 jan", "N(94840, 1.2e+08)", 94840,
+  "<aggregated>", "bu", "2025 feb", "N(94355, 1.4e+08)", 94355,
+  "<aggregated>", "bu", "2025 mar", "N(91166, 1.6e+08)", 91166,
+  "<aggregated>", "bu", "2025 apr", "N(85543, 1.7e+08)", 85543
+)
+
+forecast_result <- tribble(
+  ~.model, ~Dato, ~Antal_ledige, ~.mean,
+  "SARIMA_111_110", "2024 maj", "N(84128, 1.6e+07)", 84128,
+  "SARIMA_111_110", "2024 jun", "N(85084, 5.6e+07)", 85084,
+  "SARIMA_111_110", "2024 jul", "N(88889, 1e+08)", 88889,
+  "SARIMA_111_110", "2024 aug", "N(89891, 1.6e+08)", 89891,
+  "SARIMA_111_110", "2024 sep", "N(84923, 2.1e+08)", 84923,
+  "SARIMA_111_110", "2024 okt", "N(84991, 2.6e+08)", 84991,
+  "SARIMA_111_110", "2024 nov", "N(86046, 3.1e+08)", 86046,
+  "SARIMA_111_110", "2024 dec", "N(83997, 3.6e+08)", 83997,
+  "SARIMA_111_110", "2025 jan", "N(100721, 4.1e+08)", 100721,
+  "SARIMA_111_110", "2025 feb", "N(101226, 4.6e+08)", 101226,
+  "SARIMA_111_110", "2025 mar", "N(97659, 5.2e+08)", 97659,
+  "SARIMA_111_110", "2025 apr", "N(93816, 5.7e+08)", 93816
+)
+
+# Samle .mean værdierne i en ny tabel
+combined_means <- aggregated_forecasts %>%
+  select(Dato, `Hierakisk Tidsserie` = .mean) %>%
+  left_join(
+    forecast_result %>%
+      select(Dato, SARIMA = .mean),
+    by = "Dato"
+  )
+
+# Vis de kombinerede data som en pæn tabel
+combined_means %>%
+  kable(caption = "Sammenligning af .mean værdier for Aggregated og SARIMA modeller") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+Baseret på metrikkerne vurderes det at ledighed fordelt på mænd og kvinder ikke har forbedret forudsigelsen af den totale ledighed. Samtidig vurderes det at SARIMAs forudsigelse ligger 40 personer fra den faktiske forudsigelse, hvilket kan indikere en bedre præcision.
+
+# Anbefalinger
+
+Håndtering af Outliers
+
+-   Det anbefales at outliers håndteres. Man kan evt. lave en boxcox eller log transformering, for at forbedre håndtering af outliers. Det kan også overvejes at bruge modeller der er særlige robuste overfor outliers som f.eks Robust ARIMA. Man kan også vælge en SARIMAX og inkludere dummyvariabler som f.eks COVID-19.
+
+Relevante variabler
+
+-   Man kan overveje at tilføje flere eller andre variabler, der kan have indflydelse på Ledighedstallet. Økonomiske variabler som indflation eller høj- og lavkonjuktur kunne overvejes.
+
+Yderligere niveauer
+
+-   Tilføje flere niveaer. Ledighed fordelt på regioner eller demografi kunne overvejes.
+
+# Konklussion
+
+Det vurderes at den hierakiske tidsserie ikke har forbedret præcisionen af forudsigelsen. SARIMA har overordnet bedre RMSE, MAE og MAPE hvilet indikerer en højere præcision.
